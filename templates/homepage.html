@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h2>Welcome to Flights</h2>
+
+    <form action="/results" method="POST">
+    <label for="user-departure">Departure:</label>
+    <input type="text", name="departure", id="user-departure", value="LAX"/>
+    <br></br>
+    <label for="user-arrival">Arrival:</label>
+    <input type="text", name="arrival", id="user-arrival", value="SFO"/>
+    <br></br>
+    <label for="user-departure-date">Departure Date:</label>
+    <input type="date", name="departure-date", id="user-departure-date", value="2016-09-10"/>
+    <br></br>
+    <label for="user-arrival-date">Arrival Date:</label>
+    <input type="date", name="arrival-date", id="user-arrival-date", value="2016-11-10"/>
+    <br></br>
+    <label for="user-results">Number of results:</label>
+    <input type="text", name="results", id="user-results", value="5"/>
+    <br></br>
+
+    <input type="submit"/>
+
+    </form>
+    
+
+{% endblock %}
