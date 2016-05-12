@@ -3,18 +3,25 @@
 
     <h2>Cheapest Flights</h2>
 
-{{ departure_date }}
-{{ airport_code_departure }}
-{{ airport_name_departure }}
+{# departure_date #}
+{# airport_code_departure #}
+{# airport_name_departure #}
 
-{{ arrival_date }}
-{{ airport_code_arrival }}
-{{ airport_name_arrival }}
+{# arrival_date #}
+{# airport_code_arrival #}
+{# airport_name_arrival #}
 
-{{ carrier_code }}
-{{ carrier_name }}
-{{ sale_fare_total }}
-{{ sale_tax_total }}
-{{ sale_total }}
+{# carrier_code #}
+{# carrier_name #}
+{# sale_fare_total #}
+{# sale_tax_total #}
+{# sale_total #}
+
+<ul>
+{% for item in all_results %}
+    
+  <li> {{ item[:4] }}</li>
+{% endfor %}
+</ul>
 
 {% endblock %}
