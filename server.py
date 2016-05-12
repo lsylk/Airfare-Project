@@ -1,3 +1,5 @@
+import os
+
 import requests
 
 import json
@@ -39,8 +41,10 @@ def airfares():
     arrival_date = request.form.get("arrival-date")
     number_of_results = request.form.get("results")
 
+    API_KEY = os.environ['AIRFARE_USER_KEY']
+
     # HTTP request
-    request_url = "https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyCpMKb8Fc4OzeXOgqri4dKHEA-2wzP1wis"
+    REQUEST_URL = "https://www.googleapis.com/qpxExpress/v1/trips/search?key=" + API_KEY
     # Structure of the request body
 
     payload = {
@@ -92,26 +96,40 @@ def airfares():
 
     # Asking for a request using the post method
     # Used json.dumps to turn the dictionary into a JSON string
-    r = requests.post(request_url, data=json.dumps(payload), headers=headers)
-    search_results = [r.json()]
+    r = requests.post(REQUEST_URL, data=json.dumps(payload), headers=headers)
+    search_results = r.json()
 
-    departure_date = search_results["trips"]["tripOption"][0]["slice"][0]["segment"][0]["leg"][0]["departureTime"]
-    airport_code_departure = search_results["trips"]["data"]["city"][0]["code"]
-    airport_name_departure = search_results["trips"]["data"]["city"][0]["name"]
+    # bogger
 
-    arrival_date = search_results["trips"]["tripOption"][0]["slice"][0]["segment"][0]["leg"][0]["arrivalTime"]
-    airport_code_arrival = search_results["trips"]["data"]["city"][1]["code"]
-    airport_name_arrival = search_results["trips"]["data"]["city"][1]["name"]
+    # # trip_option is a list of dictionaries, one dictionary per option. 
 
-    aircraft_name = search_results["trips"]["data"]["aircraft"][0]["name"]
-    carrier_code = search_results["trips"]["data"]["carrier"][0]["code"]
-    carrier_name = search_results["trips"]["data"]["carrier"][0]["name"]
-    flight_duration = search_results["trips"]["tripOption"][0]["slice"][0]["segment"][0]["leg"][0]["duration"]
+    # departure_date = trip_options[0]["slice"][0]["segment"][0]["leg"][0]["departureTime"]
+    # airport_code_departure = search_results["trips"]["data"]["city"][0]["code"]
+    # airport_name_departure = search_results["trips"]["data"]["city"][0]["name"]
 
-    # airfare_total = search_results["trips"]["tripOption"][0]["saleTotal"]
-    sale_fare_total = search_results["trips"]["tripOption"][0]["pricing"][0]["saleFareTotal"]
-    sale_tax_total = search_results["trips"]["tripOption"][0]["pricing"][0]["saleTaxTotal"]
-    sale_total = search_results["trips"]["tripOption"][0]["pricing"][0]["saleTotal"]
+    # arrival_date = trip_options[0]["slice"][0]["segment"][0]["leg"][0]["arrivalTime"]
+    # airport_code_arrival = search_results["trips"]["data"]["city"][1]["code"]
+    # airport_name_arrival = search_results["trips"]["data"]["city"][1]["name"]
+
+    # aircraft_name = search_results["trips"]["data"]["aircraft"][0]["name"]
+    # carrier_code = search_results["trips"]["data"]["carrier"][0]["code"]
+    # carrier_name = search_results["trips"]["data"]["carrier"][0]["name"]
+    # flight_duration = search_results["trips"]["tripOption"][0]["slice"][0]["segment"][0]["leg"][0]["duration"]
+
+    # # airfare_total = search_results["trips"]["tripOption"][0]["saleTotal"]
+    # sale_fare_total = trip_options[0]["pricing"][0]["saleFareTotal"]
+    # sale_tax_total = strip_options[0]["pricing"][0]["saleTaxTotal"]
+    # sale_total = trip_options[0]["pricing"][0]["saleTotal"]
+
+
+    trip_options = search_results["trips"]["tripOption"] 
+    flight_duration = trip_options[0]["slice"][0]["segment"][0]["leg"][0]["duration"]
+    sale_total = trip_options[0]["saleTotal"]
+
+    r = json.dumps(search_results)
+    print r
+
+
 
     return render_template("airfares.html", departure_date=departure_date,
                            airport_code_departure=airport_code_departure,

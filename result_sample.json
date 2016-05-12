@@ -1,0 +1,153 @@
+//Sample of one option request
+
+{
+  "kind": "qpxExpress#tripsSearch",
+  "trips": {
+    "tripOption": [{  /// list of trips  (trip_options = search_results['trips']['tripOptions'])
+      "saleTotal": "USD67.10", /// found the price = trip_options[i]['saleTotal']
+      "kind": "qpxexpress#tripOption",
+      "slice": [{ // list of slice s0 = trip_options[i]["slice"][0]
+        "duration": 70, /// found the duration for one way trip, and it has only 1 slice ... slice = trip_options[0]["slice"][0]
+        /// duration = s0["duration"]
+        "kind": "qpxexpress#sliceInfo",
+        "segment": [{
+          "kind": "qpxexpress#segmentInfo",
+          "bookingCodeCount": 7,
+          "flight": {
+            "carrier": "VX",
+            "number": "941"
+          },
+          "leg": [{
+            "origin": "LAX",
+            "originTerminal": "3",
+            "departureTime": "2016-09-10T18:35-07:00",
+            "destinationTerminal": "2",
+            "secure": true,
+            "destination": "SFO",
+            "kind": "qpxexpress#legInfo",
+            "aircraft": "320",
+            "onTimePerformance": 65,
+            "arrivalTime": "2016-09-10T19:45-07:00",
+            "duration": 70, 
+            "id": "LCVGIWQ5LYamnMKh",
+            "mileage": 337
+          }],
+          "bookingCode": "N",
+          "duration": 70,
+          "id": "GlWtqlBBmoU9v4WA",
+          "cabin": "COACH",
+          "marriedSegmentGroup": "0"
+        }]
+      }],
+      "id": "NsA5tj8zga7Mmpjm8ubGSK001",
+      "pricing": [{
+        "fare": [{
+          "origin": "LAX",
+          "basisCode": "N14X57SP",
+          "kind": "qpxexpress#fareInfo",
+          "destination": "SFO",
+          "carrier": "VX",
+          "id": "Apuvr39eMIcKpRTMO398tbmOyiNtf5FOQIhqqcObHZhs"
+        }],
+        "saleTotal": "USD67.10",
+        "kind": "qpxexpress#pricingInfo",
+        "segmentPricing": [{
+          "kind": "qpxexpress#segmentPricing",
+          "fareId": "Apuvr39eMIcKpRTMO398tbmOyiNtf5FOQIhqqcObHZhs",
+          "segmentId": "GlWtqlBBmoU9v4WA"
+        }],
+        "passengers": {
+          "kind": "qpxexpress#passengerCounts",
+          "adultCount": 1
+        },
+        "ptc": "ADT",
+        "tax": [{
+          "kind": "qpxexpress#taxInfo",
+          "code": "US",
+          "country": "US",
+          "salePrice": "USD3.70",
+          "chargeType": "GOVERNMENT",
+          "id": "US_001"
+        }, {
+          "kind": "qpxexpress#taxInfo",
+          "code": "AY",
+          "country": "US",
+          "salePrice": "USD5.60",
+          "chargeType": "GOVERNMENT",
+          "id": "AY_001"
+        }, {
+          "kind": "qpxexpress#taxInfo",
+          "code": "XF",
+          "country": "US",
+          "salePrice": "USD4.50",
+          "chargeType": "GOVERNMENT",
+          "id": "XF"
+        }, {
+          "kind": "qpxexpress#taxInfo",
+          "code": "ZP",
+          "country": "US",
+          "salePrice": "USD4.00",
+          "chargeType": "GOVERNMENT",
+          "id": "ZP"
+        }],
+        "fareCalculation": "LAX VX SFO 49.30N14X57SP USD 49.30 END ZP LAX XT 3.70US 4.00ZP 5.60AY 4.50XF LAX4.50",
+        "saleFareTotal": "USD49.30",
+        "baseFareTotal": "USD49.30",
+        "saleTaxTotal": "USD17.80",
+        "latestTicketingTime": "2016-05-12T23:59-04:00"
+      }]
+    }],
+    "kind": "qpxexpress#tripOptions",
+    "data": {
+      "city": [{
+        "kind": "qpxexpress#cityData",
+        "code": "LAX",
+        "name": "Los Angeles"
+      }, {
+        "kind": "qpxexpress#cityData",
+        "code": "SFO",
+        "name": "San Francisco"
+      }],
+      "kind": "qpxexpress#data",
+      "tax": [{
+        "kind": "qpxexpress#taxData",
+        "id": "ZP",
+        "name": "US Flight Segment Tax"
+      }, {
+        "kind": "qpxexpress#taxData",
+        "id": "AY_001",
+        "name": "US September 11th Security Fee"
+      }, {
+        "kind": "qpxexpress#taxData",
+        "id": "US_001",
+        "name": "US Transportation Tax"
+      }, {
+        "kind": "qpxexpress#taxData",
+        "id": "XF",
+        "name": "US Passenger Facility Charge"
+      }],
+      "airport": [{
+        "city": "LAX",
+        "kind": "qpxexpress#airportData",
+        "code": "LAX",
+        "name": "Los Angeles International"
+      }, {
+        "city": "SFO",
+        "kind": "qpxexpress#airportData",
+        "code": "SFO",
+        "name": "San Francisco International"
+      }],
+      "aircraft": [{
+        "kind": "qpxexpress#aircraftData",
+        "code": "320",
+        "name": "Airbus A320"
+      }],
+      "carrier": [{
+        "kind": "qpxexpress#carrierData",
+        "code": "VX",
+        "name": "Virgin America Inc."
+      }]
+    },
+    "requestId": "oRYs0t54fuHmMZMKz0OJkd"
+  }
+}
