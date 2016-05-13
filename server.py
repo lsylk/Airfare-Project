@@ -9,8 +9,8 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 
-# from datetime import datetime
-import datetime
+from datetime import datetime
+
 # from model import
 
 from pprint import pprint
@@ -40,6 +40,7 @@ def airfares():
     departure_date = request.form.get("departure-date")
     arrival_date = request.form.get("arrival-date")
     number_of_results = request.form.get("results")
+
 
     API_KEY = os.environ['AIRFARE_USER_KEY']
 
@@ -105,7 +106,15 @@ def airfares():
         trip_options = search_results["trips"]["tripOption"]  # trip_options is a list of dictionaries, one dictionary per option.
 
         departure_date = trip_options[i]["slice"][0]["segment"][0]["leg"][0]["departureTime"]  # returns a str
+        date = datetime.strptime(departure_date, '%Y-%m-%dT%H:%M-%S:%f')
+        departure_date = date.strftime("%A, %d %B %Y")
+        departure_time = date.strftime("%I:%M%p")
+
         arrival_date = trip_options[i]["slice"][0]["segment"][0]["leg"][0]["arrivalTime"]  # returns a str
+        date = datetime.strptime(arrival_date, '%Y-%m-%dT%H:%M-%S:%f')
+        arrival_date = date.strftime("%A, %d %B %Y")
+        arrival_time = date.strftime("%I:%M%p")
+
         flight_duration = str(trip_options[i]["slice"][0]["duration"])  # returns an int -> type casted to a str
         sale_fare_total = trip_options[i]["pricing"][0]["saleFareTotal"]  # returns a str
         sale_tax_total = trip_options[i]["pricing"][0]["saleTaxTotal"]  # returns a str
@@ -126,7 +135,21 @@ def airfares():
         carrier_code = data["carrier"][0]["code"]  # returns a str
         carrier_name = data["carrier"][0]["name"]  # returns a str
 
-        results = [departure_date, airport_code_departure, airport_name_departure, arrival_date, airport_code_arrival, airport_name_arrival, aircraft_name, carrier_code, carrier_name, flight_duration, sale_fare_total, sale_tax_total, sale_total]
+        results = [departure_date,
+                   departure_time,
+                   airport_code_departure,
+                   airport_name_departure,
+                   arrival_date,
+                   arrival_time,
+                   airport_code_arrival,
+                   airport_name_arrival,
+                   carrier_name,
+                   carrier_code,
+                   aircraft_name,
+                   flight_duration,
+                   sale_fare_total,
+                   sale_tax_total,
+                   sale_total]
 
         # booger
 
@@ -139,40 +162,12 @@ def airfares():
     # example = [{ "name": "Nick" }, {"name": "Leslye"}]
 
     return render_template("airfares.html",
-                           # departure_date=departure_date,
-                           # airport_code_departure=airport_code_departure,
-                           # airport_name_departure=airport_name_departure,
-                           # arrival_date=arrival_date,
-                           # airport_code_arrival=airport_code_arrival,
-                           # airport_name_arrival=airport_name_arrival,
-                           # aircraft_name=aircraft_name,
-                           # carrier_code=carrier_code,
-                           # carrier_name=carrier_name,
-                           # flight_duration=flight_duration,
-                           # sale_fare_total=sale_fare_total,
-                           # sale_tax_total=sale_tax_total,
-                           # sale_total=sale_total,
                            all_results=all_results)
 
 
 ################
 
-# departure_date
-# airport_code_departure
-# airport_name_departure
 
-# arrival_date
-# airport_code_arrival
-# airport_name_arrival
-
-# carrier_code
-# carrier_name
-# flight_duration is in minutes
-
-# ###airfare_total
-# sale_fare_total
-# sale_tax_total
-# sale_total
 
 
 # num_free_baggagge = search_results["trips"]["tripOption"][0]["pricing"][0]["segmentPricing"][0]["freeBaggageOption"][0]["pieces"]
