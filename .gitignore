@@ -1,2 +1,8 @@
-project
+# project is a virtual environment.
+project 
+
+# secrets.sh contains QPX google flights API keys.
 secrets.sh
+
+# ignore all .pyc files
+*.pyc
