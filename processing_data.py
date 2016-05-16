@@ -83,8 +83,8 @@ def search_flights(request_inputs):
 
     search_results = r.json()
 
-    # ra = json.dumps(search_results)
-    # print ra
+    ra = json.dumps(search_results)
+    print ra
 
     return search_results
 
@@ -109,33 +109,25 @@ def processing_data(search_flights_json, request_inputs):
 
         departure_date = trip_options[i]["slice"][0]["segment"][0]["leg"][0]["departureTime"]  # returns a str
         arrival_date = trip_options[i]["slice"][0]["segment"][0]["leg"][0]["arrivalTime"]  # returns a str
-        
+
         sale_fare_total = trip_options[i]["pricing"][0]["saleFareTotal"]  # returns a str
         sale_tax_total = trip_options[i]["pricing"][0]["saleTaxTotal"]  # returns a str
         sale_total = trip_options[i]["pricing"][0]["saleTotal"]  # returns a str
 
         flight_duration = str(trip_options[i]["slice"][0]["duration"])  # returns an int -> type casted to a str
         aircraft_number = trip_options[i]["slice"][0]["segment"][0]["flight"]["number"]  # returns a str
-        carrier_code = trip_options[i]["slice"][0]["segment"][0]["flight"]["carrier"]  # returns a str  
-        
+        carrier_code = trip_options[i]["slice"][0]["segment"][0]["flight"]["carrier"]  # returns a str
+
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         data = search_flights_json["trips"]["data"]  # data is a nested object
 
         carrier_name_code = data["carrier"][0]["code"]  # returns a str
+        carrier_name = data["carrier"][0]["name"]
 
         if carrier_code == carrier_name_code:
             carrier_name = data["carrier"][0]["name"]
-            return carrier_name
-          
-
-        """>>> carrier_code
-                u'UA'
-                >>> carrier_name
-                u'United Airlines, Inc.'
-                >>> aircraft_name
-                u'Airbus A320'"""
-
-        booger
+        else:
+            carrier_name = data["carrier"][1]["name"]
 
         datetime_stamps = [departure_date, arrival_date]  # [u'2016-09-10T15:35-07:00', u'2016-09-10T16:48-07:00']
 
@@ -152,7 +144,6 @@ def processing_data(search_flights_json, request_inputs):
 
         # departure_date = trip_options[i][slice_0]["departureTime"]  # returns a str
         # datetime_object = datetime.strptime(departure_date, parse_date_format)
-        
 
         # arrival_date = trip_options[i][slice_0]["arrivalTime"]  # returns a str
 
@@ -183,6 +174,8 @@ def processing_data(search_flights_json, request_inputs):
                    sale_total]
 
         all_results.append(results)
+
+        # booger
       
 
 # r = json.dumps(search_results)
@@ -193,6 +186,7 @@ def processing_data(search_flights_json, request_inputs):
 
 # num_free_baggagge = search_results["trips"]["tripOption"][0]["pricing"][0]["segmentPricing"][0]["freeBaggageOption"][0]["pieces"]
 # free_baggage_weigh = search_results["trips"]["tripOption"][0]["pricing"][0]["segmentPricing"][0]["freeBaggageOption"][0]["kilosPerPieces"]
+     
 
     return all_results
 
