@@ -1,4 +1,4 @@
-from processing_data import request_user_input, search_flights, processing_data, instantiate_datetime_object, format_datetime_object
+from processing_data import request_user_input, search_flights, processing_data
 
 from jinja2 import StrictUndefined
 
@@ -50,24 +50,3 @@ if __name__ == "__main__":
     DebugToolbarExtension(app)
 
     app.run()
-
-
-
-
-
-    # {% for result in processing_data_results %}
-    #         <li> Departure date: {{ result[0] }} at {{ result[1] }}</li>
-    #         <li> Departing from {{ result[2] }}: {{ result[3] }}</li>
-    #         <li> Arrival date {{ result[4] }} at {{ result[5] }}</li>
-    #         <li> Arriving to {{ result[6] }}: {{ result[7] }}</li>
-           
-    #         <li> Airlines : {{ result[8] }} {{ result[9] }} - {{ result[10] }} </li>
-          
-    #         <li> Flight duration: {{ result[11] }} minutes</li>
-    #         <li> Airfare: {{ result[12] }}</li>
-    #         <li> Tax: {{ result[13] }}</li>
-    #         <li> Total: {{ result[14] }}</li>
-           
-    #         <br></br>
-
-    #         {% endfor %}

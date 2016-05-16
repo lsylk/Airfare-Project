@@ -83,6 +83,9 @@ def search_flights(request_inputs):
 
     search_results = r.json()
 
+    # ra = json.dumps(search_results)
+    # print ra
+
     return search_results
 
 
@@ -99,32 +102,48 @@ def processing_data(search_flights_json, request_inputs):
 
     all_results = []
     for i in range(int(request_inputs[4])):
-    #The forllowing variables are defined to call different keys from the dictionary returned from the post request:
+    # The following variables are defined to call different keys from the dictionary returned from the post request:
     # number of results is a list
 
         trip_options = search_flights_json["trips"]["tripOption"]  # trip_options is a list of dictionaries, one dictionary per option.
 
         departure_date = trip_options[i]["slice"][0]["segment"][0]["leg"][0]["departureTime"]  # returns a str
-        # date = datetime.strptime(departure_date, '%Y-%m-%dT%H:%M+%S:%f')
-        # departure_date = date.strftime("%A, %d %B %Y")
-        # departure_time = date.strftime("%I:%M%p")
-
         arrival_date = trip_options[i]["slice"][0]["segment"][0]["leg"][0]["arrivalTime"]  # returns a str
-        # date = datetime.strptime(arrival_date, '%Y-%m-%dT%H:%M+%S:%f')
-        # arrival_date = date.strftime("%A, %d %B %Y")
-        # arrival_time = date.strftime("%I:%M%p")
-
-        flight_duration = str(trip_options[i]["slice"][0]["duration"])  # returns an int -> type casted to a str
+        
         sale_fare_total = trip_options[i]["pricing"][0]["saleFareTotal"]  # returns a str
         sale_tax_total = trip_options[i]["pricing"][0]["saleTaxTotal"]  # returns a str
         sale_total = trip_options[i]["pricing"][0]["saleTotal"]  # returns a str
 
+        flight_duration = str(trip_options[i]["slice"][0]["duration"])  # returns an int -> type casted to a str
+        aircraft_number = trip_options[i]["slice"][0]["segment"][0]["flight"]["number"]  # returns a str
+        carrier_code = trip_options[i]["slice"][0]["segment"][0]["flight"]["carrier"]  # returns a str  
+        
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         data = search_flights_json["trips"]["data"]  # data is a nested object
 
-        aircraft_name = data["aircraft"][0]["name"]  # returns a str
-        carrier_code = data["carrier"][0]["code"]  # returns a str
-        carrier_name = data["carrier"][0]["name"]  # returns a str
+        carrier_name_code = data["carrier"][0]["code"]  # returns a str
+
+        if carrier_code == carrier_name_code:
+            carrier_name = data["carrier"][0]["name"]
+            return carrier_name
+          
+
+        """>>> carrier_code
+                u'UA'
+                >>> carrier_name
+                u'United Airlines, Inc.'
+                >>> aircraft_name
+                u'Airbus A320'"""
+
+        booger
+
+        datetime_stamps = [departure_date, arrival_date]  # [u'2016-09-10T15:35-07:00', u'2016-09-10T16:48-07:00']
+
+        datetime_objects = instantiate_datetime_object(datetime_stamps)  # [datetime.datetime(2016, 9, 10, 15, 35, 7), datetime.datetime(2016, 9, 10, 16, 48, 7)]
+
+        datetime_stamps = format_datetime_object(datetime_objects)  # [('Saturday, 10 September 2016', '03:35PM'), ('Saturday, 10 September 2016', '04:48PM')]
+
+        # all_results_with_datestamps = (all_results, datetime_stamps)
 # #########################################################################
 ############################################################################
         # trip_options = search_flights_json["trips"]["tripOption"][i]  # trip_options is a list of dictionaries, one dictionary per option.
@@ -142,42 +161,32 @@ def processing_data(search_flights_json, request_inputs):
         # sale_tax_total = trip_options["pricing_0"]["saleTaxTotal"]  # returns a str
         # sale_total = trip_options["pricing_0"]["saleTotal"]  # returns a str
 
-
-        # #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # data = search_flights_json["trips"]["data"]  # data is a nested object
-
-
-        # aircraft_name = data["aircraft"][i]["name"]  # returns a str
-        # carrier_code = data["carrier"][i]["code"]  # returns a str
-        # carrier_name = data["carrier"][i]["name"]  # returns a str
+        departure_date = datetime_stamps[0][0]
+        departure_time = datetime_stamps[0][1]
+        arrival_date = datetime_stamps[1][0]
+        arrival_time = datetime_stamps[1][1]
 
         results = [departure_date,
-                   # departure_time,
+                   departure_time,
                    airport_code_departure,
                    airport_name_departure,
                    arrival_date,
-                   # arrival_time,
+                   arrival_time,
                    airport_code_arrival,
                    airport_name_arrival,
                    carrier_name,
                    carrier_code,
-                   aircraft_name,
+                   aircraft_number,
                    flight_duration,
                    sale_fare_total,
                    sale_tax_total,
                    sale_total]
 
         all_results.append(results)
-
-        datetime = [departure_date, arrival_date]
-
-        datetime_object = instantiate_datetime_object(datetime)
-
+      
 
 # r = json.dumps(search_results)
 # print r
-
-# example = [{ "name": "Nick" }, {"name": "Leslye"}]
 
 ################
 
@@ -185,112 +194,31 @@ def processing_data(search_flights_json, request_inputs):
 # num_free_baggagge = search_results["trips"]["tripOption"][0]["pricing"][0]["segmentPricing"][0]["freeBaggageOption"][0]["pieces"]
 # free_baggage_weigh = search_results["trips"]["tripOption"][0]["pricing"][0]["segmentPricing"][0]["freeBaggageOption"][0]["kilosPerPieces"]
 
-    return all_results  # it's a list of lists
+    return all_results
 
 
-def instantiate_datetime_object(datetime):
+def instantiate_datetime_object(datetime_stamps):
     """Takes a date as a string and instatiates it into an object."""
-
 
     parse_date_format = "%Y-%m-%dT%H:%M-%S:%f"
 
-    all_datetime = []
-    for i in datetime:
+    all_datetime_stamps = []
 
-        datetime_object = datetime.strptime(date[i], parse_date_format)
+    for datetime_stamp in datetime_stamps:
+        datetime_object = datetime.strptime(datetime_stamp, parse_date_format)
+        all_datetime_stamps.append(datetime_object)
 
-        all_datetime.append(datetime_object)
-
-    return all_datetime
+    return all_datetime_stamps
 
 
-def format_datetime_object(all_datetime):
+def format_datetime_object(datetime_stamps):
     """Takes a datetime object and returns a string to represent the date and time."""
 
-    for datetime_object in all_datetime:
+    all_date_time_stamps = []
+
+    for datetime_object in datetime_stamps:
         date_stamp = datetime_object.strftime("%A, %d %B %Y")
         time_stamp = datetime_object.strftime("%I:%M%p")
+        all_date_time_stamps.append((date_stamp, time_stamp))
 
-    return date_stamp, time_stamp  # returns a tupple
-
-
-
-
-#     all_results = []
-#     for i in range(int(number_of_results)):
-#     #The forllowing variables are defined to call different keys from the dictionary returned from the post request:
-
-#         trip_options = search_results["trips"]["tripOption"]  # trip_options is a list of dictionaries, one dictionary per option.
-
-#         departure_date = trip_options[i]["slice"][0]["segment"][0]["leg"][0]["departureTime"]  # returns a str
-#         datetime_object = datetime.strptime(departure_date, '%Y-%m-%dT%H:%M-%S:%f')
-#         departure_date = date.strftime("%A, %d %B %Y")
-#         departure_time = date.strftime("%I:%M%p")
-
-#         arrival_date = trip_options[i]["slice"][0]["segment"][0]["leg"][0]["arrivalTime"]  # returns a str
-#         date = datetime.strptime(arrival_date, '%Y-%m-%dT%H:%M-%S:%f')
-#         arrival_date = date.strftime("%A, %d %B %Y")
-#         arrival_time = date.strftime("%I:%M%p")
-
-#         flight_duration = str(trip_options[i]["slice"][0]["duration"])  # returns an int -> type casted to a str
-#         sale_fare_total = trip_options[i]["pricing"][0]["saleFareTotal"]  # returns a str
-#         sale_tax_total = trip_options[i]["pricing"][0]["saleTaxTotal"]  # returns a str
-#         sale_total = trip_options[i]["pricing"][0]["saleTotal"]  # returns a str
-
-
-#         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#         data = search_results["trips"]["data"]  # data is a nested object
-
-#         aircraft_name = data["aircraft"][i]["name"]  # returns a str
-#         carrier_code = data["carrier"][i]["code"]  # returns a str
-#         carrier_name = data["carrier"][i]["name"]  # returns a str
-
-#         results = [departure_date,
-#                    departure_time,
-#                    airport_code_departure,
-#                    airport_name_departure,
-#                    arrival_date,
-#                    arrival_time,
-#                    airport_code_arrival,
-#                    airport_name_arrival,
-#                    carrier_name,
-#                    carrier_code,
-#                    aircraft_name,
-#                    flight_duration,
-#                    sale_fare_total,
-#                    sale_tax_total,
-#                    sale_total]
-
-#         # booger
-
-#         all_results.append(results)
-
-
-#     # r = json.dumps(search_results)
-#     # print r
-
-#     # example = [{ "name": "Nick" }, {"name": "Leslye"}]
-
-#     return render_template("airfares.html",
-#                            all_results=all_results)
-
-
-# ################
-
-
-
-
-# # num_free_baggagge = search_results["trips"]["tripOption"][0]["pricing"][0]["segmentPricing"][0]["freeBaggageOption"][0]["pieces"]
-# # free_baggage_weigh = search_results["trips"]["tripOption"][0]["pricing"][0]["segmentPricing"][0]["freeBaggageOption"][0]["kilosPerPieces"]
-
-# if __name__ == "__main__":
-#     # We have to set debug=True here, since it has to be True at the point
-#     # that we invoke the DebugToolbarExtension
-#     app.debug = True
-
-#     # connect_to_db(app)
-
-#     # Use the DebugToolbar
-#     DebugToolbarExtension(app)
-
-#     app.run()
+    return all_date_time_stamps  # returns a tupple
