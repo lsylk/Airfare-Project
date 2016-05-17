@@ -155,23 +155,23 @@ def processing_data(search_flights_json, request_inputs):
         arrival_time = datetime_stamps[1][1]  # returns a str (i.e. '03:20PM')
 
         # results is a list of the variables that have been processed and/or formatted above. Each list represents one option.
-        results = [departure_date,
-                   departure_time,
-                   airport_code_departure,
-                   airport_name_departure,
-                   arrival_date,
-                   arrival_time,
-                   airport_code_arrival,
-                   airport_name_arrival,
-                   carrier_name,
-                   carrier_code,
-                   aircraft_number,
-                   flight_duration,
-                   sale_fare_total,
-                   sale_tax_total,
-                   sale_total]
+        results = {'departure_date': departure_date,
+                   'departure_time': departure_time,
+                   'airport_code_departure': airport_code_departure,
+                   'airport_name_departure': airport_name_departure,
+                   'arrival_date': arrival_date,
+                   'arrival_time': arrival_time,
+                   'airport_code_arrival': airport_code_arrival,
+                   'airport_name_arrival': airport_name_arrival,
+                   'carrier_name': carrier_name,
+                   'carrier_code': carrier_code,
+                   'aircraft_number': aircraft_number,
+                   'flight_duration': flight_duration,
+                   'sale_fare_total': sale_fare_total,
+                   'sale_tax_total': sale_tax_total,
+                   'sale_total': sale_total}
 
-        all_results.append(results)  # This list contains all the results/options that the user requested.
+        all_results.append(results)  # This is a list of dictionaries and contains all the results/options that the user requested.
 
 ################
 # r = json.dumps(search_results)

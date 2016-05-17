@@ -9,17 +9,17 @@
 
         <ul>        
            {% for result in processing_data_results %}
-            <li> Departure date: {{ result[0] }} at {{ result[1] }}</li>
-            <li> Departing from {{ result[2] }}: {{ result[3] }}</li>
-            <li> Arrival date {{ result[4] }} at {{ result[5] }}</li>
-            <li> Arriving to {{ result[6] }}: {{ result[7] }}</li>
+            <li> Departure date: {{ result['departure_date'] }} at {{ result['departure_time'] }}</li>
+            <li> Departing from {{ result['airport_code_departure'] }}: {{ result['airport_name_departure'] }}</li>
+            <li> Arrival date {{ result['arrival_date'] }} at {{ result['arrival_time'] }}</li>
+            <li> Arriving to {{ result['airport_code_arrival'] }}: {{ result['airport_name_arrival'] }}</li>
            
-            <li> Airlines : {{ result[8] }} {{ result[9] }} - {{ result[10] }} </li>
+            <li> Airlines : {{ result['carrier_name'] }} {{ result['carrier_code'] }} - {{ result['aircraft_number'] }} </li>
           
-            <li> Flight duration: {{ result[11] }} minutes</li>
-            <li> Airfare: ${{ result[12][3:] }}</li>
-            <li> Tax: ${{ result[13][3:] }}</li>
-            <li> Total: ${{ result[14][3:] }}</li>
+            <li> Flight duration: {{ result['flight_duration'] }} minutes</li>
+            <li> Airfare: ${{ result['sale_fare_total'][3:] }}</li>
+            <li> Tax: ${{ result['sale_tax_total'][3:] }}</li>
+            <li> Total: ${{ result['sale_total'][3:] }}</li>
            
             <br></br>
 
