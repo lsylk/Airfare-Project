@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 def request_user_input():
-    """Requests user's input information at the root --> /
+    """Requests user's input information at the root --> /.
     """
 
     departure = (request.form.get("departure")).upper()
@@ -233,6 +233,7 @@ def format_datetime_object(datetime_stamps):
 # Unit Test
 if __name__ == "__main__":
     import doctest
+
     print
     result = doctest.testmod()
     if not result.failed:
