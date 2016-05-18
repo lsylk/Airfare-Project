@@ -10,17 +10,18 @@ from datetime import datetime
 
 
 def request_user_input():
-    """Requests user's input information at the root --> / ."""
+    """Requests user's input information at the root --> /
+    """
 
-    departure = request.form.get("departure")
-    arrival = request.form.get("arrival")
+    departure = (request.form.get("departure")).upper()
+    arrival = (request.form.get("arrival")).upper()
     departure_date = request.form.get("departure-date")
     arrival_date = request.form.get("arrival-date")
     number_of_results = request.form.get("results")  # This is the number of options that the user wants.
 
     input_result = [departure, arrival, departure_date, arrival_date, number_of_results]
 
-    return input_result  # This list contains all the information that the user input during the request.
+    return input_result  # This list contains all the information that the user input during the request (i.e. [u'LAX', u'SFO', u'2016-09-10', u'2016-11-10', u'1']).
 
 
 def search_flights(request_inputs):
@@ -87,7 +88,7 @@ def search_flights(request_inputs):
 
 
 def processing_data(search_flights_json, request_inputs):
-    """Processes the results from the user's search"""
+    """Parses the results from the user's search"""
 
     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # The values from these variables remain the same; therefore don't need to include them in the for loop.
@@ -183,7 +184,17 @@ def processing_data(search_flights_json, request_inputs):
 
 
 def instantiate_datetime_object(datetime_stamps):
-    """Takes a datestamp as a string and instatiates it into an object."""
+    """Takes a datestamp as a string and instatiates it into an object.
+
+    >>> datetime_stamps = [u'2016-09-10T15:35-07:00', u'2016-09-10T16:48-07:00']
+    >>> instantiate_datetime_object(datetime_stamps)
+    [datetime.datetime(2016, 9, 10, 15, 35, 7), datetime.datetime(2016, 9, 10, 16, 48, 7)]
+
+    >>> datetime_stamps = [u'2016-09-10T15:35-07:00']
+    >>> instantiate_datetime_object(datetime_stamps)
+    [datetime.datetime(2016, 9, 10, 15, 35, 7)]
+
+    """
 
     parse_date_format = "%Y-%m-%dT%H:%M-%S:%f"
 
@@ -197,7 +208,17 @@ def instantiate_datetime_object(datetime_stamps):
 
 
 def format_datetime_object(datetime_stamps):
-    """Takes a datetime object and returns date and time as a string that have been formatted."""
+    """Takes a datetime object and returns date and time as a string that have been formatted.
+
+    >>> datetime_stamps = [datetime(2016, 9, 10, 15, 35, 7), datetime(2016, 9, 10, 16, 48, 7)]
+    >>> format_datetime_object(datetime_stamps)
+    [('Saturday, 10 September 2016', '03:35PM'), ('Saturday, 10 September 2016', '04:48PM')]
+
+    >>> datetime_stamps = [datetime(2016, 9, 10, 15, 35, 7)]
+    >>> format_datetime_object(datetime_stamps)
+    [('Saturday, 10 September 2016', '03:35PM')]
+
+    """
 
     all_date_time_stamps = []
 
@@ -207,3 +228,13 @@ def format_datetime_object(datetime_stamps):
         all_date_time_stamps.append((date_stamp, time_stamp))
 
     return all_date_time_stamps  # returns a list of tupples (i.e. [('Saturday, 10 September 2016', '03:35PM'), ('Saturday, 10 September 2016', '04:48PM')])
+
+##############################################################################
+# Unit Test
+if __name__ == "__main__":
+    import doctest
+    print
+    result = doctest.testmod()
+    if not result.failed:
+        print "ALL TESTS PASSED!"
+    print

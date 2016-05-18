@@ -13,7 +13,7 @@ from pprint import pprint
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "ABC"
+app.secret_key = "SECRETKEYSECRET"
 
 # Raises an error if an undefined variable in Jinja2 fails silently.
 app.jinja_env.undefined = StrictUndefined

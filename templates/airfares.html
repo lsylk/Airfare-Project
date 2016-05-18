@@ -9,10 +9,10 @@
 
         <ul>        
            {% for result in processing_data_results %}
-            <li> Departure date: {{ result['departure_date'] }} at {{ result['departure_time'] }}</li>
-            <li> Departing from {{ result['airport_code_departure'] }}: {{ result['airport_name_departure'] }}</li>
-            <li> Arrival date {{ result['arrival_date'] }} at {{ result['arrival_time'] }}</li>
-            <li> Arriving to {{ result['airport_code_arrival'] }}: {{ result['airport_name_arrival'] }}</li>
+            <li> Departuring on {{ result['departure_date'] }} at {{ result['departure_time'] }}</li>
+            <li> From {{ result['airport_code_departure'] }}: {{ result['airport_name_departure'] }}</li>
+            <li> Arriving on {{ result['arrival_date'] }} at {{ result['arrival_time'] }}</li>
+            <li> At {{ result['airport_code_arrival'] }}: {{ result['airport_name_arrival'] }}</li>
            
             <li> Airlines : {{ result['carrier_name'] }} {{ result['carrier_code'] }} - {{ result['aircraft_number'] }} </li>
           
