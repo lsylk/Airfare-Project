@@ -1,4 +1,5 @@
-from processing_data import request_user_input, search_flights, processing_data
+from processing_data import request_user_input, find_one_way_flights, currencyadd
+
 
 from jinja2 import StrictUndefined
 
@@ -18,6 +19,11 @@ app.secret_key = "SECRETKEYSECRET"
 # Raises an error if an undefined variable in Jinja2 fails silently.
 app.jinja_env.undefined = StrictUndefined
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#                         Custom Filters for Jinja
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app.jinja_env.filters['currencyadd'] = currencyadd
+
 
 @app.route('/')
 def search():
@@ -31,13 +37,25 @@ def get_airfares():
 
     request_inputs = request_user_input()
 
-    search_flights_json = search_flights(request_inputs)
+    return_date = request_inputs['return_date']
 
-    processing_data_results = processing_data(search_flights_json, request_inputs)
+    if return_date == '':
+        parsed_results = find_one_way_flights(request_inputs)
+        parsed_results_return = None
+
+    else:
+        parsed_results = find_one_way_flights(request_inputs)
+
+        return_flights = {'departure': request_inputs['arrival'],
+                          'arrival': request_inputs['departure'],
+                          'departure_date': request_inputs['return_date'],
+                          'number_of_results': request_inputs['number_of_results']}
+
+        parsed_results_return = find_one_way_flights(return_flights)
 
     return render_template("airfares.html",
-                           processing_data_results=processing_data_results)
-
+                           parsed_results=parsed_results,
+                           parsed_results_return=parsed_results_return)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

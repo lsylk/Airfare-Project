@@ -3,7 +3,8 @@
 
     <h2>Welcome to Flights</h2>
 
-    <h4>Please insert the values</h4>    
+    <h4>Please insert the values</h4>  
+      
 <!-- User form to input trip information -->
     <form action="/results" method="POST">
     <label for="user-departure">Departure:</label>
@@ -18,15 +19,19 @@
     <input type="date", name="departure-date", id="user-departure-date", value="2016-09-10", required/>
     <br></br>
 
-    <label for="user-arrival-date">Arrival Date:</label>
+  <!--   <label for="user-arrival-date">Arrival Date:</label>
     <input type="date", name="arrival-date", id="user-arrival-date", value="2016-11-10", required/>
+    <br></br> -->
+
+    <label for="user-return-date">Return Date:</label>
+    <input type="date", name="return-date", id="user-return-date", value=None/>
     <br></br>
 
     <label for="user-results">Number of results:</label>
-    <input type="number", name="results", min="1", max="3", id="user-results", value="3", required/>
+    <input type="number", name="results", min="1", max="3", id="user-results", value="1", required/>
     <br></br>
 
-    <input type="submit", value="Search"/>
+    <input type="submit", value="Find"/>
 
     </form>
     

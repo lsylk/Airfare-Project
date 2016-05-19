@@ -10,16 +10,21 @@ from datetime import datetime
 
 
 def request_user_input():
-    """Requests user's input information at the root --> /.
+    """Requests user's input information at the root --> /
     """
 
     departure = (request.form.get("departure")).upper()
     arrival = (request.form.get("arrival")).upper()
     departure_date = request.form.get("departure-date")
-    arrival_date = request.form.get("arrival-date")
+    # arrival_date = request.form.get("arrival-date")
+    return_date = request.form.get("return-date")
     number_of_results = request.form.get("results")  # This is the number of options that the user wants.
 
-    input_result = [departure, arrival, departure_date, arrival_date, number_of_results]
+    input_result = {'departure': departure,
+                    'arrival': arrival,
+                    'departure_date': departure_date,
+                    'return_date': return_date,
+                    'number_of_results': number_of_results}
 
     return input_result  # This list contains all the information that the user input during the request (i.e. [u'LAX', u'SFO', u'2016-09-10', u'2016-11-10', u'1']).
 
@@ -46,9 +51,9 @@ def search_flights(request_inputs):
             "slice": [
                 {
                     "kind": "qpxexpress#sliceInput",
-                    "origin": str(request_inputs[0]),
-                    "destination": str(request_inputs[1]),
-                    "date": str(request_inputs[2]),
+                    "origin": str(request_inputs['departure']),
+                    "destination": str(request_inputs['arrival']),
+                    "date": str(request_inputs['departure_date']),
                     "maxStops": 0,
                     "maxConnectionDuration": 0,
                     "preferredCabin": None,
@@ -69,7 +74,7 @@ def search_flights(request_inputs):
             "maxPrice": None,
             "saleCountry": None,
             "refundable": False,
-            "solutions": int(request_inputs[4]),
+            "solutions": int(request_inputs['number_of_results']),
             }
         }
 
@@ -104,7 +109,7 @@ def processing_data(search_flights_json, request_inputs):
 
     # This for loop iterates through the search_flights_json that was returned from the request made by the user.
 
-    for i in range(int(request_inputs[4])):  # request_inputs[4] is the number of options that the user input during the search.
+    for i in range(int(request_inputs['number_of_results'])):  # request_inputs[4] is the number of options that the user input during the search.
 
     # The following variables are defined to call different keys from the json returned from the post request:
 
@@ -129,7 +134,6 @@ def processing_data(search_flights_json, request_inputs):
 
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         carrier_data = search_flights_json["trips"]["data"]["carrier"]  # carrier_data is a nested object inside the dict, and it is a list.
-
         carrier_name_code = carrier_data[0]["code"]  # returns a unicode str (i.e. u'VX')
         carrier_name = carrier_data[0]["name"]  # returns a unicode str (i.e. u'Virgin America Inc.')
 
@@ -229,11 +233,31 @@ def format_datetime_object(datetime_stamps):
 
     return all_date_time_stamps  # returns a list of tupples (i.e. [('Saturday, 10 September 2016', '03:35PM'), ('Saturday, 10 September 2016', '04:48PM')])
 
+
+def find_one_way_flights(request_inputs):
+        """Finds one-way flights."""
+
+        search_flights_json = search_flights(request_inputs)
+
+        processing_data_results = processing_data(search_flights_json, request_inputs)
+
+        return processing_data_results
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#                         Custom Filters for Jinja
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+def currencyadd(value1, value2):
+    """Typecasts strings and adds them up."""
+
+    return float(value1[3:]) + float(value2[3:])
+
+
 ##############################################################################
 # Unit Test
 if __name__ == "__main__":
     import doctest
-
     print
     result = doctest.testmod()
     if not result.failed:
