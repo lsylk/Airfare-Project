@@ -8,11 +8,11 @@
 <!-- User form to input trip information -->
     <form action="/results" method="POST">
     <label for="user-departure">Departure:</label>
-    <input type="text", name="departure", id="user-departure", value="LAX", required/>
+    <input type="text", name="departure", id="user-departure", value="SFO", placeholder="Input airport code", required/>
     <br></br>
 
     <label for="user-arrival">Arrival:</label>
-    <input type="text", name="arrival", id="user-arrival", value="SFO", required/>
+    <input type="text", name="arrival", id="user-arrival", value="LAX", placeholder="Input airport code" required/>
     <br></br>
 
     <label for="user-departure-date">Departure Date:</label>
@@ -28,7 +28,7 @@
     <br></br>
 
     <label for="user-results">Number of results:</label>
-    <input type="number", name="results", min="1", max="3", id="user-results", value="1", required/>
+    <input type="number", name="results", min="1", max="3", id="user-results", value="2", required/>
     <br></br>
 
     <input type="submit", value="Find"/>

@@ -256,6 +256,8 @@ def find_cheap_airfare_by_case():
         parsed_results = find_one_way_flights(request_inputs)
         parsed_results_return = None
 
+        cheap_airfares = (parsed_results, parsed_results_return)
+
     # case: roundtrip
     else:
         parsed_results = find_one_way_flights(request_inputs)
