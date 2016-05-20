@@ -1,5 +1,4 @@
-from processing_data import request_user_input, find_one_way_flights, currencyadd
-
+from processing_data import request_user_input, find_one_way_flights, find_cheap_airfare_by_case, currencyadd
 
 from jinja2 import StrictUndefined
 
@@ -34,24 +33,13 @@ def search():
 
 @app.route('/results', methods=["POST"])
 def get_airfares():
+    """Gets the cheapest airfares based on users input."""
 
-    request_inputs = request_user_input()
+    cheap_airfares = find_cheap_airfare_by_case()  # calls the function to get the results based on the type of trip (i.e. one-way, roundtrip, multicity).
 
-    return_date = request_inputs['return_date']
+    parsed_results = cheap_airfares[0]
 
-    if return_date == '':
-        parsed_results = find_one_way_flights(request_inputs)
-        parsed_results_return = None
-
-    else:
-        parsed_results = find_one_way_flights(request_inputs)
-
-        return_flights = {'departure': request_inputs['arrival'],
-                          'arrival': request_inputs['departure'],
-                          'departure_date': request_inputs['return_date'],
-                          'number_of_results': request_inputs['number_of_results']}
-
-        parsed_results_return = find_one_way_flights(return_flights)
+    parsed_results_return = cheap_airfares[1]
 
     return render_template("airfares.html",
                            parsed_results=parsed_results,

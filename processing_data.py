@@ -93,7 +93,7 @@ def search_flights(request_inputs):
 
 
 def processing_data(search_flights_json, request_inputs):
-    """Parses the results from the user's search"""
+    """Parses the results from the user's search, reading it"""
 
     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # The values from these variables remain the same; therefore don't need to include them in the for loop.
@@ -128,7 +128,7 @@ def processing_data(search_flights_json, request_inputs):
 
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         slice_0 = search_flights_json["trips"]["tripOption"][i]["slice"][0]  # returns a dict
-        flight_duration = slice_0["duration"]  # the duration is in minutes and returns a str (i.e. 70)
+        flight_duration = slice_0["duration"]  # the duration is in minutes and returns a str (i.e. u'70')
         aircraft_number = slice_0["segment"][0]["flight"]["number"]  # returns a unicode str (i.e. u'929')
         carrier_code = slice_0["segment"][0]["flight"]["carrier"]  # returns a unicode str (i.e. u'VX')
 
@@ -235,13 +235,41 @@ def format_datetime_object(datetime_stamps):
 
 
 def find_one_way_flights(request_inputs):
-        """Finds one-way flights."""
+    """Finds one-way flights."""
 
-        search_flights_json = search_flights(request_inputs)
+    search_flights_json = search_flights(request_inputs)
 
-        processing_data_results = processing_data(search_flights_json, request_inputs)
+    processing_data_results = processing_data(search_flights_json, request_inputs)
 
-        return processing_data_results
+    return processing_data_results
+
+
+def find_cheap_airfare_by_case():
+    """Gets the cheapest airfares based on users input."""
+
+    request_inputs = request_user_input()  # calls the function to request the inputs from the user.
+
+    return_date = request_inputs['return_date']
+
+    # case: one-way
+    if return_date == '':
+        parsed_results = find_one_way_flights(request_inputs)
+        parsed_results_return = None
+
+    # case: roundtrip
+    else:
+        parsed_results = find_one_way_flights(request_inputs)
+
+        return_flights = {'departure': request_inputs['arrival'],
+                          'arrival': request_inputs['departure'],
+                          'departure_date': request_inputs['return_date'],
+                          'number_of_results': request_inputs['number_of_results']}
+
+        parsed_results_return = zip(parsed_results, find_one_way_flights(return_flights))
+
+        cheap_airfares = (parsed_results, parsed_results_return)
+
+    return cheap_airfares
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #                         Custom Filters for Jinja
@@ -249,7 +277,7 @@ def find_one_way_flights(request_inputs):
 
 
 def currencyadd(value1, value2):
-    """Typecasts strings and adds them up."""
+    """Typecasts strings into floats and adds them up."""
 
     return float(value1[3:]) + float(value2[3:])
 

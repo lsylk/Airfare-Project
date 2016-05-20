@@ -8,7 +8,9 @@
         <br></br>
 
         <ul> 
-                    {% for result in parsed_results %}
+                    {% if parsed_results_return is none %}
+                        
+                        {% for result in parsed_results %}
                     
                     <li> Departing on {{ result['departure_date'] }} at {{ result['departure_time'] }}</li>
                     <li> From {{ result['airport_code_departure'] }}: {{ result['airport_name_departure'] }}</li>
@@ -17,27 +19,52 @@
                    
                     <li> Airlines : {{ result['carrier_name'] }} {{ result['carrier_code'] }} - {{ result['aircraft_number'] }} </li>
                     <li> Flight duration: {{ result['flight_duration'] }} minutes</li>
-                    
-                        {% if parsed_results_return is none %}
 
-                        <li> Airfare: ${{ result['sale_fare_total'][3:] }}</li>
-                        <li> Tax: ${{ result['sale_tax_total'][3:] }}</li>
-                        <li> Total: ${{ result['sale_total'][3:] }}</li>
+                    <h4>Price</h4>
 
-                        {% else %}
+                        {% set currency = result['sale_fare_total'][:3] %}
+
+                        <li> Airfare: {{ currency }} ${{ result['sale_fare_total'][3:] }}</li>
+                        <li> Tax: {{ currency }}  ${{ result['sale_tax_total'][3:] }}</li>
+                        <li> Total: {{ currency }}  ${{ result['sale_total'][3:] }}</li>
+
+                    <br></br>
+
+                        {% endfor %}
+
+                    {% else %}
                        
-                            {% for return_result in parsed_results_return %}
-                            <li> Returning on {{ return_result['departure_date'] }} at {{ return_result['departure_time'] }}</li>
-                            <li> From {{ return_result['airport_code_departure'] }}: {{ return_result['airport_name_departure'] }}</li>
-                            <li> Arriving on {{ return_result['arrival_date'] }} at {{ return_result['arrival_time'] }}</li>
-                            <li> At {{ return_result['airport_code_arrival'] }}: {{ return_result['airport_name_arrival'] }}</li>
+                        {% for return_result in parsed_results_return %}
 
-                            <li> Airlines : {{ return_result['carrier_name'] }} {{ return_result['carrier_code'] }} - {{ return_result['aircraft_number'] }} </li>
-                          
-                            <li> Flight duration: {{ return_result['flight_duration'] }} minutes</li>
-                            <li> Airfare: $ {{ result['sale_fare_total'] | currencyadd(return_result['sale_fare_total']) }}</li>
-                            <li> Tax: $ {{ result['sale_tax_total'] | currencyadd(return_result['sale_tax_total']) }}</li>
-                            <li> Total: $ {{ result['sale_total'] | currencyadd(return_result['sale_total']) }}</li>
+
+                        <li> Departing on {{ return_result[0]['departure_date'] }} at {{ return_result[0]['departure_time'] }}</li>
+                        <li> From {{ return_result[0]['airport_code_departure'] }}: {{ return_result[0]['airport_name_departure'] }}</li>
+                        <li> Arriving on {{ return_result[0]['arrival_date'] }} at {{ return_result[0]['arrival_time'] }}</li>
+                        <li> At {{ return_result[0]['airport_code_arrival'] }}: {{ return_result[0]['airport_name_arrival'] }}</li>
+                       
+                        <li> Airlines : {{ return_result[0]['carrier_name'] }} {{ return_result[0]['carrier_code'] }} - {{ return_result[0]['aircraft_number'] }} </li>
+                        <li> Flight duration: {{ return_result[0]['flight_duration'] }} minutes</li>
+                        
+                        <br></br>
+
+                        <li> Returning on {{ return_result[1]['departure_date'] }} at {{ return_result[1]['departure_time'] }}</li>
+                        <li> From {{ return_result[1]['airport_code_departure'] }}: {{ return_result[1]['airport_name_departure'] }}</li>
+                        <li> Arriving on {{ return_result[1]['arrival_date'] }} at {{ return_result[1]['arrival_time'] }}</li>
+                        <li> At {{ return_result[1]['airport_code_arrival'] }}: {{ return_result[1]['airport_name_arrival'] }}</li>
+
+                        <li> Airlines : {{ return_result[1]['carrier_name'] }} {{ return_result[1]['carrier_code'] }} - {{ return_result[1]['aircraft_number'] }} </li>
+                      
+                        <li> Flight duration: {{ return_result[1]['flight_duration'] }} minutes</li>
+                        <br></br>
+
+                        <h4>Price</h4>
+                        
+                        {% set currency = return_result[0]['sale_fare_total'][:3] %}
+
+                        <li> Airfare: {{ currency }}  ${{ return_result[0]['sale_fare_total'] | currencyadd(return_result[1]['sale_fare_total']) }}</li>
+                        <li> Tax: {{ currency }}  ${{ return_result[0]['sale_tax_total'] | currencyadd(return_result[1]['sale_tax_total']) }}</li>
+                        <li> Total: {{ currency }}  ${{ return_result[0]['sale_total'] | currencyadd(return_result[1]['sale_total']) }}</li>
+                        <br></br>
                         
                             {% endfor %}
 
@@ -45,7 +72,7 @@
 
                 {% endif %}
 
-                {% endfor %}
+                
                 
                 <br></br>
         </ul>
