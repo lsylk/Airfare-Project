@@ -92,7 +92,7 @@ def search_flights(request_inputs):
     return search_results
 
 
-def processing_data(search_flights_json, request_inputs):
+def parsing_data(search_flights_json, request_inputs):
     """Parses the results from the user's search, reading it"""
 
     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -239,7 +239,7 @@ def find_one_way_flights(request_inputs):
 
     search_flights_json = search_flights(request_inputs)
 
-    processing_data_results = processing_data(search_flights_json, request_inputs)
+    processing_data_results = parsing_data(search_flights_json, request_inputs)
 
     return processing_data_results
 
