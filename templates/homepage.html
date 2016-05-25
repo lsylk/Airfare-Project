@@ -23,7 +23,7 @@
           <p>
 
             <div ng-controller="controlForm">
-                <div form-oneway> </div>
+                <div form-roundtrip> </div>
             </div>
         
               </p>
@@ -50,13 +50,11 @@
     </div>
 
 <script>
-
 </script>
 
 
 <script>
     "use strict";
-
         var app = angular.module('MyApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']);
         // var app = angular.module("MyApp", []);
         app.controller('controlForm', ["$scope", function($scope) {
@@ -65,12 +63,17 @@
             $scope.departure_date = new Date(); // "2016-10-11 ==> 11/11/2016"
             $scope.results = 1;
         }])
-
                 .directive('formOneway', function() {
           return {
-            templateUrl: '/static/html/form.html'
-          };
+            templateUrl: '/static/html/one_way_form.html'
+          }
+        })
+             .directive('formRoundtrip', function() {
+          return {
+            templateUrl: '/static/html/round_trip_form.html'
+          }
         });
+           
     </script>
     
 
