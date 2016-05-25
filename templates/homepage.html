@@ -1,39 +1,77 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <h2>Welcome to Flights</h2>
+<h2>Welcome to Flights</h2>
 
-    <h4>Please insert the values</h4>  
-      
-<!-- User form to input trip information -->
-    <form action="/results" method="POST">
-    <label for="user-departure">Departure:</label>
-    <input type="text", name="departure", id="user-departure", value="SFO", placeholder="Input airport code", required/>
-    <br></br>
+<h4>Please insert the values</h4>  
 
-    <label for="user-arrival">Arrival:</label>
-    <input type="text", name="arrival", id="user-arrival", value="LAX", placeholder="Input airport code" required/>
-    <br></br>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+<!-- recently in the bottom -->
 
-    <label for="user-departure-date">Departure Date:</label>
-    <input type="date", name="departure-date", id="user-departure-date", value="2016-09-10", required/>
-    <br></br>
+  <div ng-cloak="" class="tabsdemoDynamicHeight" ng-app="MyApp">
+  <md-content>
+    <md-tabs md-dynamic-height="" md-border-bottom="">
+      <md-tab label="Round Trip">
+        <md-content class="md-padding">
+          <h1 class="md-display-2">Tab One</h1>
+          <p>
 
-  <!--   <label for="user-arrival-date">Arrival Date:</label>
-    <input type="date", name="arrival-date", id="user-arrival-date", value="2016-11-10", required/>
-    <br></br> -->
+            <div ng-controller="controlForm">
+                <div form-oneway> </div>
+            </div>
+        
+              </p>
+            </md-content>
+          </md-tab>
+          <md-tab label="One-Way">
+            <md-content class="md-padding">
+              <h1 class="md-display-2">Tab Two</h1>
+              <p>
+                <div ng-controller="controlForm">
+                    <div form-oneway> </div>
+                </div>
+            </p>
+            </md-content>
+          </md-tab>
+          <md-tab label="Multi-city">
+            <md-content class="md-padding">
+              <h1 class="md-display-2">Tab Three</h1>
+              <p>Multi-City</p>
+            </md-content>
+          </md-tab>
+        </md-tabs>
+      </md-content>
+    </div>
 
-    <label for="user-return-date">Return Date:</label>
-    <input type="date", name="return-date", id="user-return-date", value=None/>
-    <br></br>
+<script>
 
-    <label for="user-results">Number of results:</label>
-    <input type="number", name="results", min="1", max="3", id="user-results", value="2", required/>
-    <br></br>
+</script>
 
-    <input type="submit", value="Find"/>
 
-    </form>
+<script>
+    "use strict";
+
+        var app = angular.module('MyApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']);
+        // var app = angular.module("MyApp", []);
+        app.controller('controlForm', ["$scope", function($scope) {
+            $scope.departure = "LAX";
+            $scope.arrival = "SFO";
+            $scope.departure_date = new Date(); // "2016-10-11 ==> 11/11/2016"
+            $scope.results = 1;
+        }])
+
+                .directive('formOneway', function() {
+          return {
+            templateUrl: '/static/html/form.html'
+          };
+        });
+    </script>
     
 
 {% endblock %}

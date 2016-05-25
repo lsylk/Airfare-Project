@@ -15,9 +15,9 @@ def request_user_input():
 
     departure = (request.form.get("departure")).upper()
     arrival = (request.form.get("arrival")).upper()
-    departure_date = request.form.get("departure-date")
+    departure_date = request.form.get("departure_date")
     # arrival_date = request.form.get("arrival-date")
-    return_date = request.form.get("return-date")
+    return_date = request.form.get("return_date")
     number_of_results = request.form.get("results")  # This is the number of options that the user wants.
 
     input_result = {'departure': departure,
@@ -88,6 +88,9 @@ def search_flights(request_inputs):
     r = requests.post(REQUEST_URL, data=json.dumps(payload), headers=headers)  # Used post method request and json.dumps to turn the dictionary into a JSON string
 
     search_results = r.json()
+
+    r = json.dumps(search_results)
+    print r
 
     return search_results
 
