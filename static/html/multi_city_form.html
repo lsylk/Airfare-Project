@@ -8,14 +8,13 @@
         <input class="form_control", type="text", name="departure", ng-model="choice.departure", id="user-departure", placeholder="Input airport code", required/>
 
         <label for="user-arrival">Arrival:</label>
-        <input class="form_control", type="text", name="choice.arrival", ng-model="arrival", id="user-arrival", placeholder="Input airport code" required/>
+        <input class="form_control", type="text", name="arrival", ng-model="choice.arrival", id="user-arrival", placeholder="Input airport code", required/>
        
 
         <label for="user-departure-date">Departure Date:</label>
-        <input class="form_control", type="date", name="choice.departure_date", ng-model="departure_date", min= id="user-departure-date"/>
+        <input class="form_control", type="date", name="departure_date", ng-model="choice.departure_date", id="user-departure-date", required/>
         
-        <label for="user-results">Number of results:</label>
-        <input class="form_control", type="number", name="choice.results", ng-model="results", min="1", max="3", id="user-results", required/>
+        <input class="form_control", type="hidden", name="results", ng-model="choices.result", min="1", max="1", id="user-results", required/>
         
       <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
   </fieldset>
