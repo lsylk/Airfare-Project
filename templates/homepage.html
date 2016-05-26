@@ -5,16 +5,9 @@
 
 <h4>Please insert the values</h4>  
 
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
 <!-- recently in the bottom -->
 
-  <div ng-cloak="" class="tabsdemoDynamicHeight" ng-app="MyApp">
+  <div ng-cloak="" class="tabsDynamicHeight" ng-app="flightApp">
   <md-content>
     <md-tabs md-dynamic-height="" md-border-bottom="">
       <md-tab label="Round Trip">
@@ -22,7 +15,7 @@
           <h1 class="md-display-2">Tab One</h1>
           <p>
 
-            <div ng-controller="controlForm">
+            <div ng-controller="ctrlForm">
                 <div form-roundtrip> </div>
             </div>
         
@@ -33,7 +26,7 @@
             <md-content class="md-padding">
               <h1 class="md-display-2">Tab Two</h1>
               <p>
-                <div ng-controller="controlForm">
+                <div ng-controller="ctrlForm">
                     <div form-oneway> </div>
                 </div>
             </p>
@@ -42,7 +35,11 @@
           <md-tab label="Multi-city">
             <md-content class="md-padding">
               <h1 class="md-display-2">Tab Three</h1>
-              <p>Multi-City</p>
+              <p>
+                 <div ng-controller="ctrlForm">
+                    <div form-multicity> </div>
+                </div>
+              </p>
             </md-content>
           </md-tab>
         </md-tabs>
@@ -55,13 +52,27 @@
 
 <script>
     "use strict";
-        var app = angular.module('MyApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']);
-        // var app = angular.module("MyApp", []);
-        app.controller('controlForm', ["$scope", function($scope) {
+        var app = angular.module('flightApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']);
+        app.controller('ctrlForm', ["$scope", function($scope) {
             $scope.departure = "LAX";
             $scope.arrival = "SFO";
             $scope.departure_date = new Date(); // "2016-10-11 ==> 11/11/2016"
             $scope.results = 1;
+  
+            $scope.choices = [{id: 'choice1'}, {id: 'choice2'}];
+  
+            $scope.addNewChoice = function() {
+            var newItemNo = $scope.choices.length+1;
+            $scope.choices.push({'id':'choice'+newItemNo +newItemNo +newItemNo});
+            };
+        
+            $scope.removeChoice = function() {
+              var lastItem = $scope.choices.length-1;
+              $scope.choices.splice(lastItem);
+            };
+      
+        
+
         }])
                 .directive('formOneway', function() {
           return {
@@ -71,6 +82,11 @@
              .directive('formRoundtrip', function() {
           return {
             templateUrl: '/static/html/round_trip_form.html'
+          }
+        })
+             .directive('formMulticity', function() {
+          return {
+            templateUrl: '/static/html/multi_city_form.html'
           }
         });
            

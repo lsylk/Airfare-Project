@@ -2,21 +2,21 @@
 
 <form action="/results" method="POST">
 <label for="user-departure">Departure:</label>
-<input type="text", name="departure", ng-model="departure", id="user-departure",value="SFO", placeholder="Input airport code", required/>
+<input type="text", name="departure", ng-model="departure", id="user-departure", placeholder="Input airport code", required/>
 
 
 <br></br>
 
 <label for="user-arrival">Arrival:</label>
-<input class="form_control", type="text", name="arrival", ng-model="arrival", id="user-arrival", value="LAX", placeholder="Input airport code" required/>
+<input class="form_control", type="text", name="arrival", ng-model="arrival", id="user-arrival", placeholder="Input airport code" required/>
 <br></br>
 
 <label for="user-departure-date">Departure Date:</label>
-<input class="form_control", type="date", name="departure_date", ng-model="departure_date", id="user-departure-date"/>
+<input class="form_control", type="date", name="departure_date", ng-model="departure_date", id="user-departure-date" required/>
 <br></br>
 
 <label for="user-return-date">Return Date:</label>
-<input class="form_control", type="date", name="return_date", ng-model="return_date", id="user-return-date"/>
+<input class="form_control", type="date", name="return_date", ng-model="return_date", id="user-return-date", required/>
 <br></br>
 
 <label for="user-results">Number of results:</label>

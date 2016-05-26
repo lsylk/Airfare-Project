@@ -1,0 +1,49 @@
+<!-- Multi-City Form -->
+
+   <div ng-app="flightApp" ng-controller="ctrlForm">
+   <fieldset  data-ng-repeat="choice in choices">
+        <form action="/results" method="POST">
+        
+        <label for="user-departure">Departure:</label>
+        <input class="form_control", type="text", name="departure", ng-model="choice.departure", id="user-departure", placeholder="Input airport code", required/>
+
+        <label for="user-arrival">Arrival:</label>
+        <input class="form_control", type="text", name="choice.arrival", ng-model="arrival", id="user-arrival", placeholder="Input airport code" required/>
+       
+
+        <label for="user-departure-date">Departure Date:</label>
+        <input class="form_control", type="date", name="choice.departure_date", ng-model="departure_date", min= id="user-departure-date"/>
+        
+        <label for="user-results">Number of results:</label>
+        <input class="form_control", type="number", name="choice.results", ng-model="results", min="1", max="3", id="user-results", required/>
+        
+      <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
+  </fieldset>
+        <button class="addfields" ng-click="addNewChoice()">+</button>
+        <input class="form_control", type="submit", value="Find"/>
+        </form>
+
+
+        <div id="choicesDisplay">
+      {{ choices }}
+   </div>
+       
+</div>
+
+
+<!-- <div ng-app="MyApp" ng-controller="controlForm">
+   <fieldset  data-ng-repeat="choice in choices">
+      <select>
+         <option>Mobile</option>
+         <option>Office</option>
+         <option>Home</option>
+      </select>
+      <input type="text" ng-model="choice.depart" name="" >
+      <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
+   </fieldset>
+   <button class="addfields" ng-click="addNewChoice()">Add fields</button>
+       
+   <div id="choicesDisplay">
+      {{ choices }}
+   </div>
+</div> -->
