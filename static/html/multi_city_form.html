@@ -12,7 +12,14 @@
        
 
         <label for="user-departure-date">Departure Date:</label>
-        <input class="form_control", type="date", name="departure_date", ng-model="choice.departure_date", id="user-departure-date", required/>
+        <!-- <input class="form_control", type="date", name="departure_date", ng-model="choice.departure_date", id="user-departure-date", required/> -->
+        <input class="form_control", name="return_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="return_date" id="user-return-date" is-open="showdp" placeholder="Return date", required/>
+        <span>
+            <button type="button" class="btn btn-default" ng-click="showcalendar1($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+        </span>
+        
         
         <input class="form_control", type="hidden", name="results", ng-model="choices.result", min="1", max="1", id="user-results", required/>
         

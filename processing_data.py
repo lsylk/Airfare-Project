@@ -89,8 +89,10 @@ def search_flights(request_inputs):
 
     search_results = r.json()
 
-    r = json.dumps(search_results)
-    print r
+    # booger
+
+    # r = json.dumps(search_results)
+    # print r
 
     return search_results
 

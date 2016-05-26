@@ -12,11 +12,23 @@
 <br></br>
 
 <label for="user-departure-date">Departure Date:</label>
-<input class="form_control", type="date", name="departure_date", ng-model="departure_date", id="user-departure-date" required/>
+<input class="form_control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="departure_date" id="user-departure-date" is-open="showdp" placeholder="Departure date", required/>
+<span>
+    <button type="button" class="btn btn-default" ng-click="showcalendar($event)">
+        <i class="glyphicon glyphicon-calendar"></i>
+    </button>
+</span>
+</div>
 <br></br>
 
 <label for="user-return-date">Return Date:</label>
-<input class="form_control", type="date", name="return_date", ng-model="return_date", id="user-return-date", required/>
+<input class="form_control", name="return_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="return_date" id="user-return-date" is-open="showdp" placeholder="Return date", required/>
+<span>
+    <button type="button" class="btn btn-default" ng-click="showcalendar($event)">
+        <i class="glyphicon glyphicon-calendar"></i>
+    </button>
+</span>
+</div>
 <br></br>
 
 <label for="user-results">Number of results:</label>
