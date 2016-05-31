@@ -2,30 +2,69 @@ from os import environ
 
 import requests
 
-from flask import request
-
 import json
 
 from datetime import datetime
 
 
-def request_user_input_multicity():
-    """Requests user's input information at the root --> /
-    """
+def find_one_way_flights(request_inputs):
+    """Finds one-way flights."""
 
-    departure = request.form.getlist("departure")
-    arrival = request.form.getlist("arrival")
-    departure_date = request.form.getlist("departure_date")
-    number_of_results = request.form.getlist("results")
+    search_flights_json = search_flights(request_inputs)
 
-    multicity_results_tup = zip(departure, arrival, departure_date, number_of_results)
+    processing_data_results = parsing_data(search_flights_json, request_inputs)
 
-    multicity_results = map(create_dict, multicity_results_tup)
-
-    return multicity_results
+    return processing_data_results
 
 
-def create_dict(multicity_results):
+def find_multicity_flights(multicity_requests):
+    """Finds multi-city flights."""
+
+    search_flights_json = map(search_flights, multicity_requests)
+
+    processing_data_results = map(parsing_data, search_flights_json, multicity_requests)
+
+    #  returns a list of list of dictionaries: i.e. [
+    #[{'sale_total': u'USD223.10', 'departure_date': 'Monday, 30 May 2016', 'airport_name_arrival': u'San Francisco', 'sale_fare_total': u'USD194.42', 'arrival_time': '11:52PM', 'airport_name_departure': u'Los Angeles', 'carrier_name': u'United Airlines, Inc.', 'airport_code_departure': u'LAX', 'flight_duration': 86, 'departure_time': '10:26PM', 'arrival_date': 'Monday, 30 May 2016', 'airport_code_arrival': u'SFO', 'sale_tax_total': u'USD28.68', 'carrier_code': u'UA', 'aircraft_number': u'398'}],
+
+    #[{'sale_total': u'USD374.25', 'departure_date': 'Saturday, 25 June 2016', 'airport_name_arrival': u'San Francisco', 'sale_fare_total': u'USD335.02', 'arrival_time': '04:54PM', 'airport_name_departure': u'Miami', 'carrier_name': u'Alaska Airlines Inc.', 'airport_code_departure': u'MIA', 'flight_duration': 339, 'departure_time': '08:15AM', 'arrival_date': 'Saturday, 25 June 2016', 'airport_code_arrival': u'SFO', 'sale_tax_total': u'USD39.23', 'carrier_code': u'AS', 'aircraft_number': u'1060'}]
+    #]
+
+    parsed_results = processing_data_results
+
+    return parsed_results
+
+
+def find_cheap_airfare_by_case(request_inputs):
+    """Gets the cheapest airfares based on users input."""
+
+    return_date = request_inputs['return_date']
+
+    # case: one-way
+    if return_date == '':
+        parsed_results = find_one_way_flights(request_inputs)
+        parsed_results_return = None
+
+        cheap_airfares = (parsed_results, parsed_results_return)
+
+    # case: roundtrip
+    else:
+        parsed_results = find_one_way_flights(request_inputs)
+
+        return_flights = {'departure': request_inputs['arrival'],
+                          'arrival': request_inputs['departure'],
+                          'departure_date': request_inputs['return_date'],
+                          'number_of_results': request_inputs['number_of_results']}
+
+        parsed_results_return = zip(parsed_results, find_one_way_flights(return_flights))
+
+        cheap_airfares = (parsed_results, parsed_results_return)
+
+    return cheap_airfares
+
+
+def create_dict_with_multicity_inputs(multicity_results):
+    """Creates a dictionary based on user's input."""
 
     multicity_dict = {'departure': multicity_results[0],
                       'arrival': multicity_results[1],
@@ -35,23 +74,51 @@ def create_dict(multicity_results):
     return multicity_dict
 
 
-def request_user_input():
-    """Requests user's input information at the root --> /
+def instantiate_datetime_object(datetime_stamps):
+    """Takes a datestamp as a string and instatiates it into an object.
+
+    >>> datetime_stamps = [u'2016-09-10T15:35-07:00', u'2016-09-10T16:48-07:00']
+    >>> instantiate_datetime_object(datetime_stamps)
+    [datetime.datetime(2016, 9, 10, 15, 35, 7), datetime.datetime(2016, 9, 10, 16, 48, 7)]
+
+    >>> datetime_stamps = [u'2016-09-10T15:35-07:00']
+    >>> instantiate_datetime_object(datetime_stamps)
+    [datetime.datetime(2016, 9, 10, 15, 35, 7)]
+
     """
 
-    departure = (request.form.get("departure")).upper()
-    arrival = (request.form.get("arrival")).upper()
-    departure_date = request.form.get("departure_date")
-    return_date = request.form.get("return_date")
-    number_of_results = request.form.get("results")  # This is the number of options that the user wants.
+    parse_date_format = "%Y-%m-%dT%H:%M-%S:%f"
 
-    input_result = {'departure': departure,
-                    'arrival': arrival,
-                    'departure_date': departure_date,
-                    'return_date': return_date,
-                    'number_of_results': number_of_results}
+    all_datetime_stamps = []
 
-    return input_result  # This list contains all the information that the user input during the request (i.e. [u'LAX', u'SFO', u'2016-09-10', u'2016-11-10', u'1']).
+    for datetime_stamp in datetime_stamps:
+        datetime_object = datetime.strptime(datetime_stamp, parse_date_format)
+        all_datetime_stamps.append(datetime_object)
+
+    return all_datetime_stamps  # returns a list of datetime objects (i.e.[datetime.datetime(2016, 9, 10, 15, 35, 7), datetime.datetime(2016, 9, 10, 16, 48, 7)])
+
+
+def format_datetime_object(datetime_stamps):
+    """Takes a datetime object and returns date and time as a string that have been formatted.
+
+    >>> datetime_stamps = [datetime(2016, 9, 10, 15, 35, 7), datetime(2016, 9, 10, 16, 48, 7)]
+    >>> format_datetime_object(datetime_stamps)
+    [('Saturday, 10 September 2016', '03:35PM'), ('Saturday, 10 September 2016', '04:48PM')]
+
+    >>> datetime_stamps = [datetime(2016, 9, 10, 15, 35, 7)]
+    >>> format_datetime_object(datetime_stamps)
+    [('Saturday, 10 September 2016', '03:35PM')]
+
+    """
+
+    all_date_time_stamps = []
+
+    for datetime_object in datetime_stamps:
+        date_stamp = datetime_object.strftime("%A, %d %B %Y")
+        time_stamp = datetime_object.strftime("%I:%M%p")
+        all_date_time_stamps.append((date_stamp, time_stamp))
+
+    return all_date_time_stamps  # returns a list of tupples (i.e. [('Saturday, 10 September 2016', '03:35PM'), ('Saturday, 10 September 2016', '04:48PM')])
 
 
 def search_flights(request_inputs):
@@ -110,9 +177,9 @@ def search_flights(request_inputs):
 
     headers = {"Content-Type": "application/json"}
 
-    r = requests.post(REQUEST_URL, data=json.dumps(payload), headers=headers)  # Used post method request and json.dumps to turn the dictionary into a JSON string
+    request_as_json = requests.post(REQUEST_URL, data=json.dumps(payload), headers=headers)  # Used post method request and json.dumps to turn the dictionary into a JSON string
 
-    search_results = r.json()
+    search_results = request_as_json.json()
 
     # r = json.dumps(search_results)
     # print r
@@ -214,113 +281,6 @@ def parsing_data(search_flights_json, request_inputs):
 
     return all_results
 
-
-def instantiate_datetime_object(datetime_stamps):
-    """Takes a datestamp as a string and instatiates it into an object.
-
-    >>> datetime_stamps = [u'2016-09-10T15:35-07:00', u'2016-09-10T16:48-07:00']
-    >>> instantiate_datetime_object(datetime_stamps)
-    [datetime.datetime(2016, 9, 10, 15, 35, 7), datetime.datetime(2016, 9, 10, 16, 48, 7)]
-
-    >>> datetime_stamps = [u'2016-09-10T15:35-07:00']
-    >>> instantiate_datetime_object(datetime_stamps)
-    [datetime.datetime(2016, 9, 10, 15, 35, 7)]
-
-    """
-
-    parse_date_format = "%Y-%m-%dT%H:%M-%S:%f"
-
-    all_datetime_stamps = []
-
-    for datetime_stamp in datetime_stamps:
-        datetime_object = datetime.strptime(datetime_stamp, parse_date_format)
-        all_datetime_stamps.append(datetime_object)
-
-    return all_datetime_stamps  # returns a list of datetime objects (i.e.[datetime.datetime(2016, 9, 10, 15, 35, 7), datetime.datetime(2016, 9, 10, 16, 48, 7)])
-
-
-def format_datetime_object(datetime_stamps):
-    """Takes a datetime object and returns date and time as a string that have been formatted.
-
-    >>> datetime_stamps = [datetime(2016, 9, 10, 15, 35, 7), datetime(2016, 9, 10, 16, 48, 7)]
-    >>> format_datetime_object(datetime_stamps)
-    [('Saturday, 10 September 2016', '03:35PM'), ('Saturday, 10 September 2016', '04:48PM')]
-
-    >>> datetime_stamps = [datetime(2016, 9, 10, 15, 35, 7)]
-    >>> format_datetime_object(datetime_stamps)
-    [('Saturday, 10 September 2016', '03:35PM')]
-
-    """
-
-    all_date_time_stamps = []
-
-    for datetime_object in datetime_stamps:
-        date_stamp = datetime_object.strftime("%A, %d %B %Y")
-        time_stamp = datetime_object.strftime("%I:%M%p")
-        all_date_time_stamps.append((date_stamp, time_stamp))
-
-    return all_date_time_stamps  # returns a list of tupples (i.e. [('Saturday, 10 September 2016', '03:35PM'), ('Saturday, 10 September 2016', '04:48PM')])
-
-
-def find_one_way_flights(request_inputs):
-    """Finds one-way flights."""
-
-    search_flights_json = search_flights(request_inputs)
-
-    processing_data_results = parsing_data(search_flights_json, request_inputs)
-
-    return processing_data_results
-
-
-def find_multicity_flights():
-    """Finds multi-city flights."""
-
-    request_inputs = request_user_input_multicity()  # it's a list of dict, i.e. [{'arrival': u'SFO', 'departure_date': u'2016-05-30', 'departure': u'LAX', 'number_of_results': u'1'}, {'arrival': u'MIA', 'departure_date': u'2016-06-25', 'departure': u'SFO', 'number_of_results': u'1'}]
-
-    search_flights_json = map(search_flights, request_inputs)
-
-    processing_data_results = map(parsing_data, search_flights_json, request_inputs)
-
-    #  returns a list of list of dictionaries: i.e. [
-    #[{'sale_total': u'USD223.10', 'departure_date': 'Monday, 30 May 2016', 'airport_name_arrival': u'San Francisco', 'sale_fare_total': u'USD194.42', 'arrival_time': '11:52PM', 'airport_name_departure': u'Los Angeles', 'carrier_name': u'United Airlines, Inc.', 'airport_code_departure': u'LAX', 'flight_duration': 86, 'departure_time': '10:26PM', 'arrival_date': 'Monday, 30 May 2016', 'airport_code_arrival': u'SFO', 'sale_tax_total': u'USD28.68', 'carrier_code': u'UA', 'aircraft_number': u'398'}],
-    
-    #[{'sale_total': u'USD374.25', 'departure_date': 'Saturday, 25 June 2016', 'airport_name_arrival': u'San Francisco', 'sale_fare_total': u'USD335.02', 'arrival_time': '04:54PM', 'airport_name_departure': u'Miami', 'carrier_name': u'Alaska Airlines Inc.', 'airport_code_departure': u'MIA', 'flight_duration': 339, 'departure_time': '08:15AM', 'arrival_date': 'Saturday, 25 June 2016', 'airport_code_arrival': u'SFO', 'sale_tax_total': u'USD39.23', 'carrier_code': u'AS', 'aircraft_number': u'1060'}]
-    
-    #]
-
-    parsed_results = processing_data_results
-
-    return parsed_results
-
-
-def find_cheap_airfare_by_case(dest,iuuhi):
-    """Gets the cheapest airfares based on users input."""
-
-    request_inputs = request_user_input()  # calls the function to request the inputs from the user.
-
-    return_date = request_inputs['return_date']
-
-    # case: one-way
-    if return_date == '':
-        parsed_results = find_one_way_flights(request_inputs)
-        parsed_results_return = None
-
-        cheap_airfares = (parsed_results, parsed_results_return)
-
-    # case: roundtrip
-    else:
-        parsed_results = find_one_way_flights(request_inputs)
-
-        return_flights = {'departure': request_inputs['arrival'],
-                          'arrival': request_inputs['departure'],
-                          'departure_date': request_inputs['return_date'],
-                          'number_of_results': request_inputs['number_of_results']}
-
-        parsed_results_return = zip(parsed_results, find_one_way_flights(return_flights))
-
-        cheap_airfares = (parsed_results, parsed_results_return)
-
-    return cheap_airfares
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #                         Custom Filters for Jinja
