@@ -9,6 +9,32 @@ import json
 from datetime import datetime
 
 
+def request_user_input_multicity():
+    """Requests user's input information at the root --> /
+    """
+
+    departure = request.form.getlist("departure")
+    arrival = request.form.getlist("arrival")
+    departure_date = request.form.getlist("departure_date")
+    number_of_results = request.form.getlist("results")
+
+    multicity_results_tup = zip(departure, arrival, departure_date, number_of_results)
+
+    multicity_results = map(create_dict, multicity_results_tup)
+
+    return multicity_results
+
+
+def create_dict(multicity_results):
+
+    multicity_dict = {'departure': multicity_results[0],
+                      'arrival': multicity_results[1],
+                      'departure_date': multicity_results[2],
+                      'number_of_results': multicity_results[3]}
+
+    return multicity_dict
+
+
 def request_user_input():
     """Requests user's input information at the root --> /
     """
@@ -16,7 +42,6 @@ def request_user_input():
     departure = (request.form.get("departure")).upper()
     arrival = (request.form.get("arrival")).upper()
     departure_date = request.form.get("departure_date")
-    # arrival_date = request.form.get("arrival-date")
     return_date = request.form.get("return_date")
     number_of_results = request.form.get("results")  # This is the number of options that the user wants.
 
@@ -88,8 +113,6 @@ def search_flights(request_inputs):
     r = requests.post(REQUEST_URL, data=json.dumps(payload), headers=headers)  # Used post method request and json.dumps to turn the dictionary into a JSON string
 
     search_results = r.json()
-
-    # booger
 
     # r = json.dumps(search_results)
     # print r
@@ -249,7 +272,28 @@ def find_one_way_flights(request_inputs):
     return processing_data_results
 
 
-def find_cheap_airfare_by_case():
+def find_multicity_flights():
+    """Finds multi-city flights."""
+
+    request_inputs = request_user_input_multicity()  # it's a list of dict, i.e. [{'arrival': u'SFO', 'departure_date': u'2016-05-30', 'departure': u'LAX', 'number_of_results': u'1'}, {'arrival': u'MIA', 'departure_date': u'2016-06-25', 'departure': u'SFO', 'number_of_results': u'1'}]
+
+    search_flights_json = map(search_flights, request_inputs)
+
+    processing_data_results = map(parsing_data, search_flights_json, request_inputs)
+
+    #  returns a list of list of dictionaries: i.e. [
+    #[{'sale_total': u'USD223.10', 'departure_date': 'Monday, 30 May 2016', 'airport_name_arrival': u'San Francisco', 'sale_fare_total': u'USD194.42', 'arrival_time': '11:52PM', 'airport_name_departure': u'Los Angeles', 'carrier_name': u'United Airlines, Inc.', 'airport_code_departure': u'LAX', 'flight_duration': 86, 'departure_time': '10:26PM', 'arrival_date': 'Monday, 30 May 2016', 'airport_code_arrival': u'SFO', 'sale_tax_total': u'USD28.68', 'carrier_code': u'UA', 'aircraft_number': u'398'}],
+    
+    #[{'sale_total': u'USD374.25', 'departure_date': 'Saturday, 25 June 2016', 'airport_name_arrival': u'San Francisco', 'sale_fare_total': u'USD335.02', 'arrival_time': '04:54PM', 'airport_name_departure': u'Miami', 'carrier_name': u'Alaska Airlines Inc.', 'airport_code_departure': u'MIA', 'flight_duration': 339, 'departure_time': '08:15AM', 'arrival_date': 'Saturday, 25 June 2016', 'airport_code_arrival': u'SFO', 'sale_tax_total': u'USD39.23', 'carrier_code': u'AS', 'aircraft_number': u'1060'}]
+    
+    #]
+
+    parsed_results = processing_data_results
+
+    return parsed_results
+
+
+def find_cheap_airfare_by_case(dest,iuuhi):
     """Gets the cheapest airfares based on users input."""
 
     request_inputs = request_user_input()  # calls the function to request the inputs from the user.

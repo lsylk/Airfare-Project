@@ -1,4 +1,4 @@
-from processing_data import request_user_input, find_one_way_flights, find_cheap_airfare_by_case, currencyadd
+from processing_data import find_cheap_airfare_by_case, find_multicity_flights, currencyadd
 
 from jinja2 import StrictUndefined
 
@@ -31,10 +31,21 @@ def search():
     return render_template("homepage.html")
 
 
+@app.route('/results_multicity', methods=["POST"])
+def get_airfares_multicity():
+    """Requests user's input information at the root --> /, and gets the cheapest airfares based on users input.
+    """
+
+    cheap_airfares = find_multicity_flights()  # calls the function to get the results based on the type of trip (i.e. one-way, roundtrip, multicity).
+
+    return render_template("multicity_airfares.html",
+                           cheap_airfares=cheap_airfares)
+
+
 @app.route('/results', methods=["POST"])
 def get_airfares():
-    """Gets the cheapest airfares based on users input."""
-
+    """Requests user's input information at the root --> /, and gets the cheapest airfares based on users input.
+    """
     cheap_airfares = find_cheap_airfare_by_case()  # calls the function to get the results based on the type of trip (i.e. one-way, roundtrip, multicity).
 
     parsed_results = cheap_airfares[0]

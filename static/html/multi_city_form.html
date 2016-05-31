@@ -1,33 +1,34 @@
 <!-- Multi-City Form -->
 
-   <div ng-app="flightApp" ng-controller="ctrlForm">
-   <fieldset  data-ng-repeat="choice in choices">
-        <form action="/results" method="POST">
-        
-        <label for="user-departure">Departure:</label>
-        <input class="form_control", type="text", name="departure", ng-model="choice.departure", id="user-departure", placeholder="Input airport code", required/>
+<form action="/results_multicity", method="POST">
+  <fieldset  data-ng-repeat="choice in choices| limitTo : 5" >
+    <label for="user-departure">Departure:</label>
+    <input class="form_control", type="text", name="departure", ng-model="departure", id="user-departure", placeholder="Input airport code", required/>
 
-        <label for="user-arrival">Arrival:</label>
-        <input class="form_control", type="text", name="arrival", ng-model="choice.arrival", id="user-arrival", placeholder="Input airport code", required/>
-       
+    <label for="user-arrival">Arrival:</label>
+    <input class="form_control", type="text", name="arrival", ng-model="arrival", id="user-arrival", placeholder="Input airport code", required/>
 
-        <label for="user-departure-date">Departure Date:</label>
-        <!-- <input class="form_control", type="date", name="departure_date", ng-model="choice.departure_date", id="user-departure-date", required/> -->
-        <input class="form_control", name="return_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="return_date" id="user-return-date" is-open="showdp" placeholder="Return date", required/>
-        <span>
-            <button type="button" class="btn btn-default" ng-click="showcalendar1($event)">
-                <i class="glyphicon glyphicon-calendar"></i>
-            </button>
-        </span>
+
+    <label for="user-departure-date">Departure Date:</label>
+    <input class="form_control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="departure_date" id="user-return-date" is-open="showdp" placeholder="Date 'yyyy-mm-dd'", required/>
+    <span>
+        <button type="button" class="btn btn-default" ng-click="showcalendar($event)">
+            <i class="glyphicon glyphicon-calendar"></i>
+        </button>
+    </span>
+
+
+    <input class="form_control", type="number", name="results", ng-model="results", id="user-results", required/>
+
+    <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
+    
+</fieldset>
+
+<button class="addfields" ng-click="addNewChoice()">+</button>
+<input class="form_control", type="submit", value="Find"/>
+
+</form>
         
-        
-        <input class="form_control", type="hidden", name="results", ng-model="choices.result", min="1", max="1", id="user-results", required/>
-        
-      <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
-  </fieldset>
-        <button class="addfields" ng-click="addNewChoice()">+</button>
-        <input class="form_control", type="submit", value="Find"/>
-        </form>
 
 
         <div id="choicesDisplay">
@@ -35,21 +36,3 @@
    </div>
        
 </div>
-
-
-<!-- <div ng-app="MyApp" ng-controller="controlForm">
-   <fieldset  data-ng-repeat="choice in choices">
-      <select>
-         <option>Mobile</option>
-         <option>Office</option>
-         <option>Home</option>
-      </select>
-      <input type="text" ng-model="choice.depart" name="" >
-      <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
-   </fieldset>
-   <button class="addfields" ng-click="addNewChoice()">Add fields</button>
-       
-   <div id="choicesDisplay">
-      {{ choices }}
-   </div>
-</div> -->

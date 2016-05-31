@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h2>Cheapest Flights</h2>
+
+<ul>
+    <li> Airfare Options
+        <br></br>
+
+        <ul>
+                        
+                        {% for result in cheap_airfares %}
+                    
+                    <li> Departing on {{ result[0]['departure_date'] }} at {{ result[0]['departure_time'] }}</li>
+                    <li> From {{ result[0]['airport_code_departure'] }}: {{ result[0]['airport_name_departure'] }}</li>
+                    <li> Arriving on {{ result[0]['arrival_date'] }} at {{ result[0]['arrival_time'] }}</li>
+                    <li> At {{ result[0]['airport_code_arrival'] }}: {{ result[0]['airport_name_arrival'] }}</li>
+                   
+                    <li> Airlines : {{ result[0]['carrier_name'] }} {{ result[0]['carrier_code'] }} - {{ result[0]['aircraft_number'] }} </li>
+                    <li> Flight duration: {{ result[0]['flight_duration'] }} minutes</li>
+
+                    <h4>Price</h4>
+
+                        {% set currency = result[0]['sale_fare_total'][:3] %}
+
+                        <li> Airfare: {{ currency }} ${{ result[0]['sale_fare_total'][3:] }}</li>
+                        <li> Tax: {{ currency }}  ${{ result[0]['sale_tax_total'][3:] }}</li>
+                        <li> Total: {{ currency }}  ${{ result[0]['sale_total'][3:] }}</li>
+
+                        <li> Airfare Total: {{ currency }}  ${{ result[0]['sale_fare_total'] | currencyadd(result[0]['sale_fare_total']) }}</li>
+
+                        <br></br>
+
+                    <br></br>
+
+                            {% endfor %}
+
+                
+                
+                <br></br>
+        </ul>
+    </li>        
+
+</ul>
+
+{% endblock %}

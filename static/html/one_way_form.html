@@ -1,63 +1,32 @@
 <!-- One Way Form -->
 
-<!-- <form action="/results" method="POST">
-<label for="user-departure">Departure:</label>
-<input type="text", name="departure", ng-model="departure", id="user-departure",value="SFO", placeholder="Input airport code", required/>
-
-
-<br></br>
-
-<label for="user-arrival">Arrival:</label>
-<input class="form_control", type="text", name="arrival", ng-model="arrival", id="user-arrival", value="LAX", placeholder="Input airport code" required/>
-<br></br>
-
-<label for="user-departure-date">Departure Date:</label>
-<input class="form_control", type="date", name="departure_date", ng-model="departure_date", id="user-departure-date"/>
-<br></br>
-
-<label for="user-results">Number of results:</label>
-<input class="form_control", type="number", name="results", ng-model="results", min="1", max="3", id="user-results", required/>
-<br></br>
-
-<label for="user-return-date">Return Date:</label>
-<input class="form_control", type="date", name="return_date", ng-model="return_date", id="user-return-date"/>
-<br></br>
-
-<input class="form_control", type="submit", value="Find"/>
-
-</form>
- -->
-
-
 <form action="/results" method="POST">
 
-<label for="user-departure">Departure:</label>
-<input type="text", name="departure", ng-model="departure", id="user-departure", placeholder="Input airport code", required/>
+    <label for="user-departure">Departure:</label>
+    <input type="text", name="departure", ng-model="departure", id="user-departure", placeholder="Input airport code", required/>
+    <br></br>
 
+    <label for="user-arrival">Arrival:</label>
+    <input class="form_control", type="text", name="arrival", ng-model="arrival", id="user-arrival", placeholder="Input airport code" required/>
+    <br></br>
 
-<br></br>
+    <label for="user-departure-date">Departure Date:</label>
+    <input class="form_control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="departure_date" id="user-departure-date" is-open="showdp" placeholder="Departure date", required/>
+    <span>
+        <button type="button" class="btn btn-default" ng-click="showcalendar($event)">
+            <i class="glyphicon glyphicon-calendar"></i>
+        </button>
+    </span>
+    </div>
+    <br></br>
 
-<label for="user-arrival">Arrival:</label>
-<input class="form_control", type="text", name="arrival", ng-model="arrival", id="user-arrival", placeholder="Input airport code" required/>
-<br></br>
+    <label for="user-results">Number of results:</label>
+    <input class="form_control", type="number", name="results", ng-model="results", min="1", max="3", id="user-results", required/>
+    <br></br>
 
-<label for="user-departure-date">Departure Date:</label>
-<input class="form_control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="departure_date" id="user-departure-date" is-open="showdp" placeholder="Departure date", required/>
-<span>
-    <button type="button" class="btn btn-default" ng-click="showcalendar($event)">
-        <i class="glyphicon glyphicon-calendar"></i>
-    </button>
-</span>
-</div>
-<br></br>
+    <input class="form_control", type="submit", value="Find"/>
 
-<label for="user-results">Number of results:</label>
-<input class="form_control", type="number", name="results", ng-model="results", min="1", max="3", id="user-results", required/>
-<br></br>
-
-<input class="form_control", type="submit", value="Find"/>
-
-<input class="form_control", type="hidden", name="return_date", ng-model="return_date", id="user-return-date"/>
-<br></br>
+    <input class="form_control", type="hidden", name="return_date", ng-model="return_date", id="user-return-date"/>
+    <br></br>
 
 </form>
