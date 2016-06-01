@@ -10,10 +10,9 @@
             $scope.return_date = null;
             $scope.results = 1;
 
-            $scope.choiceDeparture = "SFO";
-            $scope.choiceArrival = "LAX";
+            $scope.choiceDeparture = "MIA";
+            $scope.choiceArrival = "JFK";
             $scope.choiceDepartureDate = new Date();
-            $scope.choiceResult = 1;
 
             $scope.showcalendar = function ($event) {
                 $scope.showdp = true;

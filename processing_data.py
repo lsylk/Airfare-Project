@@ -87,13 +87,34 @@ def instantiate_datetime_object(datetime_stamps):
 
     """
 
-    parse_date_format = "%Y-%m-%dT%H:%M-%S:%f"
+    # all_datetime_stamps = []
+
+    # parse_date_format1 = "%Y-%m-%dT%H:%M+%S:%f"
+    # parse_date_format2 = "%Y-%m-%dT%H:%M-%S:%f"
+    
+    # for datetime_stamp in datetime_stamps:
+    #     if "+" in datetime_stamp:
+    #         datetime_object = datetime.strptime(datetime_stamp, parse_date_format1)
+    #         all_datetime_stamps.append(datetime_object)
+    #     else:
+    #         datetime_object = datetime.strptime(datetime_stamp, parse_date_format2)
+    #         all_datetime_stamps.append(datetime_object)
+
 
     all_datetime_stamps = []
 
+    parse_date_format1 = "%Y-%m-%dT%H:%M+%S:%f"
+    parse_date_format2 = "%Y-%m-%dT%H:%M-%S:%f"
+    
     for datetime_stamp in datetime_stamps:
-        datetime_object = datetime.strptime(datetime_stamp, parse_date_format)
-        all_datetime_stamps.append(datetime_object)
+        if "+" in datetime_stamp:
+            datetime_object = datetime.strptime(datetime_stamp, parse_date_format1)
+            all_datetime_stamps.append(datetime_object)
+        else:
+            datetime_object = datetime.strptime(datetime_stamp, parse_date_format2)
+            all_datetime_stamps.append(datetime_object)
+
+    print all_datetime_stamps
 
     return all_datetime_stamps  # returns a list of datetime objects (i.e.[datetime.datetime(2016, 9, 10, 15, 35, 7), datetime.datetime(2016, 9, 10, 16, 48, 7)])
 
@@ -180,6 +201,13 @@ def search_flights(request_inputs):
     request_as_json = requests.post(REQUEST_URL, data=json.dumps(payload), headers=headers)  # Used post method request and json.dumps to turn the dictionary into a JSON string
 
     search_results = request_as_json.json()
+
+    print"#############################################################"
+    print "about to make api call"
+    print"#############################################################"
+    print search_results
+    print"#############################################################"
+    print"#############################################################"
 
     # r = json.dumps(search_results)
     # print r
@@ -278,6 +306,13 @@ def parsing_data(search_flights_json, request_inputs):
 # print r
 
 ################
+
+    print"#############################################################"
+    print "about to process data"
+    print"#############################################################"
+    print all_results
+    print"#############################################################"
+    print"#############################################################"
 
     return all_results
 

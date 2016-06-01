@@ -3,14 +3,14 @@
 <form action="/results_multicity", method="POST">
   <fieldset  data-ng-repeat="choice in choices| limitTo : 5" >
     <label for="user-departure">Departure:</label>
-    <input class="form_control", type="text", name="departure", ng-model="departure", id="user-departure", placeholder="Input airport code", required/>
+    <input class="form_control", type="text", name="departure", ng-model="choiceDeparture", id="user-departure", placeholder="Input airport code", required/>
 
     <label for="user-arrival">Arrival:</label>
-    <input class="form_control", type="text", name="arrival", ng-model="arrival", id="user-arrival", placeholder="Input airport code", required/>
+    <input class="form_control", type="text", name="arrival", ng-model="choiceArrival", id="user-arrival", placeholder="Input airport code", required/>
 
 
     <label for="user-departure-date">Departure Date:</label>
-    <input class="form_control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="departure_date" id="user-return-date" is-open="showdp" placeholder="Date 'yyyy-mm-dd'", required/>
+    <input class="form_control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="choiceDepartureDate" id="user-return-date" is-open="showdp" placeholder="Date 'yyyy-mm-dd'", required/>
     <span>
         <button type="button" class="btn btn-default" ng-click="showcalendar($event)">
             <i class="glyphicon glyphicon-calendar"></i>
@@ -18,21 +18,18 @@
     </span>
 
 
-    <input class="form_control", type="number", name="results", ng-model="results", id="user-results", required/>
+    <input class="form_control", type="hidden", name="results", ng-model="results", id="user-results", value="{{ results }}" required/>
 
     <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
+
+    <button class="addfields" ng-show="$last" ng-click="addNewChoice()">+</button>
     
 </fieldset>
 
-<button class="addfields" ng-click="addNewChoice()">+</button>
-<input class="form_control", type="submit", value="Find"/>
+    <button class="submit" ng-click="submitForm()">Find</button>
+
+<!-- <input class="form_control", type="button", value="Find"/> -->
 
 </form>
-        
-
-
-        <div id="choicesDisplay">
-      {{ choices }}
-   </div>
        
 </div>
