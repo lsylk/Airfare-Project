@@ -16,8 +16,9 @@
                     <li> From {{ result['airport_code_departure'] }}: {{ result['airport_name_departure'] }}</li>
                     <li> Arriving on {{ result['arrival_date'] }} at {{ result['arrival_time'] }}</li>
                     <li> At {{ result['airport_code_arrival'] }}: {{ result['airport_name_arrival'] }}</li>
-                   
-                    <li> Airlines : {{ result['carrier_name'] }} {{ result['carrier_code'] }} - {{ result['aircraft_number'] }} </li>
+
+                    <li> Airlines : <a href="//{{ airline_link }} "> {{ result['carrier_name'] }}</a></li>
+                    <li> Aircraft Number:  {{ result['carrier_code'] }} - {{ result['aircraft_number'] }} </li>
                     <li> Flight duration: {{ result['flight_duration'] }} minutes</li>
 
                     <h4>Price</h4>
@@ -41,8 +42,9 @@
                         <li> From {{ return_result[0]['airport_code_departure'] }}: {{ return_result[0]['airport_name_departure'] }}</li>
                         <li> Arriving on {{ return_result[0]['arrival_date'] }} at {{ return_result[0]['arrival_time'] }}</li>
                         <li> At {{ return_result[0]['airport_code_arrival'] }}: {{ return_result[0]['airport_name_arrival'] }}</li>
-                       
-                        <li> Airlines : {{ return_result[0]['carrier_name'] }} {{ return_result[0]['carrier_code'] }} - {{ return_result[0]['aircraft_number'] }} </li>
+
+                        <li> Airlines : <a href="//{{ airline_link_return }} ">{{ return_result[0]['carrier_name'] }}</a> </li>
+                        <li> Aircraft Number:{{ return_result[0]['carrier_code'] }} - {{ return_result[0]['aircraft_number'] }} </li>
                         <li> Flight duration: {{ return_result[0]['flight_duration'] }} minutes</li>
                         
                         <br></br>
@@ -80,4 +82,17 @@
 
 </ul>
 
+<script src="/static/js/search_bar.js"></script>
+<script>
+  (function() {
+    var cx = '008859970868486901488:vudf5jpejty';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:search></gcse:search>
 {% endblock %}

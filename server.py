@@ -1,4 +1,4 @@
-from processing_data import find_cheap_airfare_by_case, find_multicity_flights, find_multicity_flights, create_dict_with_multicity_inputs, currencyadd
+from processing_data import find_cheap_airfare_by_case, find_multicity_flights, find_multicity_flights, create_dict_with_multicity_inputs, sum_of_sale_total_multicity, get_carrier_name, make_airline_link, currencyadd
 
 from jinja2 import StrictUndefined
 
@@ -46,9 +46,20 @@ def get_airfares_multicity():
     multicity_requests = map(create_dict_with_multicity_inputs, multicity_results_tup)
 
     cheap_airfares = find_multicity_flights(multicity_requests)  # calls the function to get the results based on the type of trip (i.e. one-way, roundtrip, multicity).
+    print "#################################################"
+    print "#################################################"
+    print cheap_airfares
+    print "#################################################"
+    carrier_name = get_carrier_name(cheap_airfares)
+
+    airline_link = make_airline_link(carrier_name)
+
+    total = sum_of_sale_total_multicity(cheap_airfares)
 
     return render_template("multicity_airfares.html",
-                           cheap_airfares=cheap_airfares)
+                           cheap_airfares=cheap_airfares,
+                           airline_link=airline_link,
+                           total=total)
 
 
 @app.route('/results', methods=["POST"])
@@ -74,9 +85,37 @@ def get_airfares():
 
     parsed_results_return = cheap_airfares[1]
 
+    carrier_name = get_carrier_name(parsed_results)
+
+    airline_link = make_airline_link(carrier_name)
+
+    print "#################################################"
+    print "Cheap airfares"
+    print "#################################################"
+    print cheap_airfares
+    print "#################################################"
+
+    print "#################################################"
+    print "parsed_results"
+    print "#################################################"
+    print parsed_results
+    print "#################################################"
+
+    print "#################################################"
+    print "parsed_results_return"
+    print "#################################################"
+    print parsed_results_return
+    print "#################################################"
+
+    carrier_name_return = get_carrier_name(parsed_results_return)
+
+    airline_link_return = make_airline_link(carrier_name_return)
+
     return render_template("airfares.html",
                            parsed_results=parsed_results,
-                           parsed_results_return=parsed_results_return)
+                           parsed_results_return=parsed_results_return,
+                           airline_link=airline_link,
+                           airline_link_return=airline_link_return)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

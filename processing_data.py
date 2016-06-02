@@ -7,6 +7,61 @@ import json
 from datetime import datetime
 
 
+def get_carrier_name(cheap_airfares):
+    "Parse carrier's name and creates a list."
+
+    # num = range(len(cheap_airfares))
+
+    # if cheap_airfares[1] is None:
+    #     carrier_name = cheap_airfares[0]['carrier_name']
+    #     carrier_name = carrier_name.split(' ')
+
+    # else:
+    #     for n in num:
+    #         for flight in cheap_airfares:
+    #             carrier_name = cheap_airfares[n][0]['carrier_name']
+    #             carrier_name = carrier_name.split(' ')
+    #             break
+
+    num = range(len(cheap_airfares))
+
+    for n in num:
+        for flight in cheap_airfares:
+            carrier_name = cheap_airfares[n][0]['carrier_name']
+            carrier_name = carrier_name.replace(',', ' ')
+            carrier_name = carrier_name.split(' ')
+            break
+    return carrier_name
+
+
+def make_airline_link(carrier_name):
+    """Creates a string for an airline's website."""
+
+    carrier_name = carrier_name[:2]
+    airline_link = ""
+    for word in carrier_name:
+        airline_link = airline_link + word
+
+    airline_link = (airline_link+".com").lower()
+
+    return airline_link
+
+
+def sum_of_sale_total_multicity(cheap_airfares):
+    """Calculates the Total for the mulcity search."""
+
+    num = range(len(cheap_airfares))
+
+    Total = 0
+    for n in num:
+        for flight in cheap_airfares:
+            sale_total = float(cheap_airfares[n][0]['sale_total'][3:])
+            Total = round(Total + sale_total, 2)
+            break
+
+    return Total
+
+
 def find_one_way_flights(request_inputs):
     """Finds one-way flights."""
 
@@ -87,25 +142,11 @@ def instantiate_datetime_object(datetime_stamps):
 
     """
 
-    # all_datetime_stamps = []
-
-    # parse_date_format1 = "%Y-%m-%dT%H:%M+%S:%f"
-    # parse_date_format2 = "%Y-%m-%dT%H:%M-%S:%f"
-    
-    # for datetime_stamp in datetime_stamps:
-    #     if "+" in datetime_stamp:
-    #         datetime_object = datetime.strptime(datetime_stamp, parse_date_format1)
-    #         all_datetime_stamps.append(datetime_object)
-    #     else:
-    #         datetime_object = datetime.strptime(datetime_stamp, parse_date_format2)
-    #         all_datetime_stamps.append(datetime_object)
-
-
     all_datetime_stamps = []
 
     parse_date_format1 = "%Y-%m-%dT%H:%M+%S:%f"
     parse_date_format2 = "%Y-%m-%dT%H:%M-%S:%f"
-    
+
     for datetime_stamp in datetime_stamps:
         if "+" in datetime_stamp:
             datetime_object = datetime.strptime(datetime_stamp, parse_date_format1)
@@ -113,8 +154,6 @@ def instantiate_datetime_object(datetime_stamps):
         else:
             datetime_object = datetime.strptime(datetime_stamp, parse_date_format2)
             all_datetime_stamps.append(datetime_object)
-
-    print all_datetime_stamps
 
     return all_datetime_stamps  # returns a list of datetime objects (i.e.[datetime.datetime(2016, 9, 10, 15, 35, 7), datetime.datetime(2016, 9, 10, 16, 48, 7)])
 
@@ -202,15 +241,7 @@ def search_flights(request_inputs):
 
     search_results = request_as_json.json()
 
-    print"#############################################################"
-    print "about to make api call"
-    print"#############################################################"
-    print search_results
-    print"#############################################################"
-    print"#############################################################"
-
     # r = json.dumps(search_results)
-    # print r
 
     return search_results
 
@@ -300,19 +331,6 @@ def parsing_data(search_flights_json, request_inputs):
                    'sale_total': sale_total}
 
         all_results.append(results)  # This is a list of dictionaries and contains all the results/options that the user requested.
-
-################
-# r = json.dumps(search_results)
-# print r
-
-################
-
-    print"#############################################################"
-    print "about to process data"
-    print"#############################################################"
-    print all_results
-    print"#############################################################"
-    print"#############################################################"
 
     return all_results
 

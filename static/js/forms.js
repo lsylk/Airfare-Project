@@ -10,8 +10,6 @@
             $scope.return_date = null;
             $scope.results = 1;
 
-            $scope.choiceDeparture = "MIA";
-            $scope.choiceArrival = "JFK";
             $scope.choiceDepartureDate = new Date();
 
             $scope.showcalendar = function ($event) {
@@ -21,8 +19,6 @@
             $scope.showdp = false;
   
             $scope.choices = [{id: 'choice1'}, {id: 'choice2'}];
-
-            $scope.choices.result = 1;
   
             $scope.addNewChoice = function() {
             var newItemNo = $scope.choices.length+1;
@@ -33,6 +29,7 @@
             var lastItem = $scope.choices.length-1;
             $scope.choices.splice(lastItem);
             };
+
 
         }])
                 .directive('formOneway', function() {
