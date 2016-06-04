@@ -45,20 +45,43 @@ def get_airfares_multicity():
 
     multicity_requests = map(create_dict_with_multicity_inputs, multicity_results_tup)
 
-    cheap_airfares = find_multicity_flights(multicity_requests)  # calls the function to get the results based on the type of trip (i.e. one-way, roundtrip, multicity).
     print "#################################################"
+    print "multicity_requests"
+    print "#################################################"
+    print multicity_requests
+    print "#################################################"
+
+    cheap_airfares = find_multicity_flights(multicity_requests)  # calls the function to get the results based on the type of trip (i.e. one-way, roundtrip, multicity).
+
+    print "#################################################"
+    print "cheap_airfares --- server"
     print "#################################################"
     print cheap_airfares
     print "#################################################"
-    carrier_name = get_carrier_name(cheap_airfares)
 
-    airline_link = make_airline_link(carrier_name)
+    carrier_names = get_carrier_name(cheap_airfares)
+
+    airline_links = make_airline_link(carrier_names)
+
+    ####Testing
+    cheap_airfares_info = zip(cheap_airfares, airline_links)
 
     total = sum_of_sale_total_multicity(cheap_airfares)
 
+    print "#################################################"
+    print "cheap_airfares from server"
+    print "#################################################"
+    print cheap_airfares_info
+    print "#################################################"
+
+    print "#################################################"
+    print "#################################################"
+    print airline_links
+    print "#################################################"
+
     return render_template("multicity_airfares.html",
-                           cheap_airfares=cheap_airfares,
-                           airline_link=airline_link,
+                           cheap_airfares_info=cheap_airfares_info,
+                           airline_links=airline_links,
                            total=total)
 
 
@@ -81,19 +104,21 @@ def get_airfares():
 
     cheap_airfares = find_cheap_airfare_by_case(request_inputs)  # calls the function to get the results based on the type of trip (i.e. one-way, roundtrip, multicity).
 
+    print "#################################################"
+    print "Cheap airfares multi"
+    print "#################################################"
+    print cheap_airfares
+    print "#################################################"
+
     parsed_results = cheap_airfares[0]
 
     parsed_results_return = cheap_airfares[1]
 
-    carrier_name = get_carrier_name(parsed_results)
+    # carrier_name = get_carrier_name(parsed_results)
 
-    airline_link = make_airline_link(carrier_name)
+    # airline_link = make_airline_link(carrier_name)
 
-    print "#################################################"
-    print "Cheap airfares"
-    print "#################################################"
-    print cheap_airfares
-    print "#################################################"
+   
 
     print "#################################################"
     print "parsed_results"
@@ -107,15 +132,13 @@ def get_airfares():
     print parsed_results_return
     print "#################################################"
 
-    carrier_name_return = get_carrier_name(parsed_results_return)
+    # carrier_name_return = get_carrier_name(parsed_results_return)
 
-    airline_link_return = make_airline_link(carrier_name_return)
+    # airline_link_return = make_airline_link(carrier_name_return)
 
     return render_template("airfares.html",
                            parsed_results=parsed_results,
-                           parsed_results_return=parsed_results_return,
-                           airline_link=airline_link,
-                           airline_link_return=airline_link_return)
+                           parsed_results_return=parsed_results_return)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

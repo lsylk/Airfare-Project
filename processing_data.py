@@ -10,6 +10,25 @@ from datetime import datetime
 def get_carrier_name(cheap_airfares):
     "Parse carrier's name and creates a list."
 
+    num = range(len(cheap_airfares))
+
+    carrier_names = []
+
+    if cheap_airfares[1] is None:
+        carrier_name = cheap_airfares[0][0]['carrier_name']
+        carrier_name = carrier_name.split(' ')
+        carrier_names.append(carrier_name)
+
+    else:
+        for n in num:
+            for flight in cheap_airfares:
+                carrier_name = cheap_airfares[n][0]['carrier_name']
+                carrier_name = carrier_name.replace(',', ' ')
+                carrier_name = carrier_name.split(' ')
+                carrier_names.append(carrier_name)
+                break
+        print carrier_names
+
     # num = range(len(cheap_airfares))
 
     # if cheap_airfares[1] is None:
@@ -23,28 +42,48 @@ def get_carrier_name(cheap_airfares):
     #             carrier_name = carrier_name.split(' ')
     #             break
 
-    num = range(len(cheap_airfares))
+    # cheap_airfares = [[{'carrier_name': u'Virgin America Inc.'}], [{'carrier_name': u'Frontier Airlines, Inc.'}], [{'carrier_name': u'Alaska Airlines Inc.'}]]
 
-    for n in num:
-        for flight in cheap_airfares:
-            carrier_name = cheap_airfares[n][0]['carrier_name']
-            carrier_name = carrier_name.replace(',', ' ')
-            carrier_name = carrier_name.split(' ')
-            break
-    return carrier_name
+    # cheap_airfares from server
+# #################################################
+# [([{'sale_total': u'USD313.10', 'departure_date': 'Sunday, 05 June 2016', 'airport_name_arrival': u'Miami', 'sale_fare_total': u'USD278.14', 'arrival_time': '07:07PM', 'airport_name_departure': u'Los Angeles', 'carrier_name': u'Alaska Airlines Inc.', 'airport_code_departure': u'LAX', 'flight_duration': 307, 'departure_time': '11:00AM', 'arrival_date': 'Sunday, 05 June 2016', 'airport_code_arrival': u'MIA', 'sale_tax_total': u'USD34.96', 'carrier_code': u'AS', 'aircraft_number': u'1174'}], u'alaskaairlines.com'), ([{'sale_total': u'USD734.10', 'departure_date': 'Thursday, 16 June 2016', 'airport_name_arrival': u'San Diego', 'sale_fare_total': u'USD669.76', 'arrival_time': '10:05PM', 'airport_name_departure': u'Miami', 'carrier_name': u'Alaska Airlines Inc.', 'airport_code_departure': u'MIA', 'flight_duration': 304, 'departure_time': '08:01PM', 'arrival_date': 'Thursday, 16 June 2016', 'airport_code_arrival': u'SAN', 'sale_tax_total': u'USD64.34', 'carrier_code': u'AS', 'aircraft_number': u'1998'}], u'alaskaairlines.com')]
+# #################################################
+#GooooooD##########
+    # num = range(len(cheap_airfares))
+
+    # carrier_names = []
+
+    # for n in num:
+    #     for flight in cheap_airfares:
+    #         carrier_name = cheap_airfares[n][0]['carrier_name']
+    #         carrier_name = carrier_name.replace(',', ' ')
+    #         carrier_name = carrier_name.split(' ')
+    #         carrier_names.append(carrier_name)
+    #         break
+    # print carrier_names
+    # return carrier_names
 
 
-def make_airline_link(carrier_name):
+def make_airline_link(carrier_names):
     """Creates a string for an airline's website."""
 
-    carrier_name = carrier_name[:2]
-    airline_link = ""
-    for word in carrier_name:
-        airline_link = airline_link + word
+    airlines = []
 
-    airline_link = (airline_link+".com").lower()
+    for carrier_name in carrier_names:
+        carrier_name = carrier_name[:2]
+        airline_link = ""
+        for word in carrier_name:
+            airline_link = airline_link + word
 
-    return airline_link
+        airlines.append(airline_link)
+
+    airline_links = []
+
+    for airline in airlines:
+        airline_link = (airline+".com").lower()
+        airline_links.append(airline_link)
+
+    return airline_links
 
 
 def sum_of_sale_total_multicity(cheap_airfares):

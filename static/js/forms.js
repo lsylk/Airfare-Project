@@ -11,6 +11,19 @@
             $scope.results = 1;
 
             $scope.choiceDepartureDate = new Date();
+            $scope.choiceDeparture = "JFK";
+
+            $scope.showcalendarDeparture = function ($event) {
+                $scope.showdpDeparture = true;
+            };
+
+            $scope.showdpDeparture = false;
+
+            $scope.showcalendarArrival = function ($event) {
+                $scope.showdpArrival = true;
+            };
+
+            $scope.showdpArrival = false;
 
             $scope.showcalendar = function ($event) {
                 $scope.showdp = true;
@@ -29,7 +42,6 @@
             var lastItem = $scope.choices.length-1;
             $scope.choices.splice(lastItem);
             };
-
 
         }])
                 .directive('formOneway', function() {
