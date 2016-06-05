@@ -1,4 +1,4 @@
-from processing_data import find_cheap_airfare_by_case, find_multicity_flights, find_multicity_flights, create_dict_with_multicity_inputs, sum_of_sale_total_multicity, get_carrier_name, make_airline_link, currencyadd
+from processing_data import find_cheap_airfare_by_case, find_multicity_flights, find_multicity_flights, create_dict_with_multicity_inputs, sum_of_sale_total_multicity, get_carrier_name, get_carrier_name_multicity,  make_airline_link, currencyadd
 
 from jinja2 import StrictUndefined
 
@@ -59,7 +59,7 @@ def get_airfares_multicity():
     print cheap_airfares
     print "#################################################"
 
-    carrier_names = get_carrier_name(cheap_airfares)
+    carrier_names = get_carrier_name_multicity(cheap_airfares)
 
     airline_links = make_airline_link(carrier_names)
 
@@ -105,7 +105,7 @@ def get_airfares():
     cheap_airfares = find_cheap_airfare_by_case(request_inputs)  # calls the function to get the results based on the type of trip (i.e. one-way, roundtrip, multicity).
 
     print "#################################################"
-    print "Cheap airfares multi"
+    print "Cheap airfares one way from server"
     print "#################################################"
     print cheap_airfares
     print "#################################################"
@@ -114,23 +114,40 @@ def get_airfares():
 
     parsed_results_return = cheap_airfares[1]
 
-    # carrier_name = get_carrier_name(parsed_results)
+    carrier_names = get_carrier_name(cheap_airfares)
 
-    # airline_link = make_airline_link(carrier_name)
+    airline_links = make_airline_link(carrier_names)
 
-   
+
+    if len(airline_links) == 1:
+        parsed_results = zip(parsed_results, airline_links)
+        parsed_results_return = cheap_airfares[1]
+    else:
+        airline_links_return = []
+        parsed_results = cheap_airfares[0]
+        for airline_link in airline_links:
+            airline_link = [airline_link]
+            airline_links_return.append(airline_link)
+        parsed_results_return = zip(parsed_results_return[0], airline_links_return)
+
+    
+
+    
+
+    
+    print "#################################################"
+    print "Cheap airfares info parsed return"
+    print "#################################################"
+    print parsed_results_return
+    print "#################################################"
 
     print "#################################################"
-    print "parsed_results"
+    print "Cheap airfares info parsed "
     print "#################################################"
     print parsed_results
     print "#################################################"
 
-    print "#################################################"
-    print "parsed_results_return"
-    print "#################################################"
-    print parsed_results_return
-    print "#################################################"
+   
 
     # carrier_name_return = get_carrier_name(parsed_results_return)
 
