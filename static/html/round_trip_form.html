@@ -29,10 +29,12 @@
     </div>
     <br></br>
 
-    <label for="user-results">Number of results:</label>
-    <input class="form_control", type="number", name="results", ng-model="results", min="1", max="3", id="user-results", required/>
+    <input class="form_control", type="submit", value="Find"/>
+
+    <!-- <label for="user-results">Number of results:</label> -->
+    <input class="form_control", type="hidden", name="results", ng-model="results", min="1", max="3", id="user-results", value="{{ results }}", required/>
     <br></br>
 
-    <input class="form_control", type="submit", value="Find"/>
+    
 
 </form>

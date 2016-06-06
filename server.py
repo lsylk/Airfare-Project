@@ -45,39 +45,15 @@ def get_airfares_multicity():
 
     multicity_requests = map(create_dict_with_multicity_inputs, multicity_results_tup)
 
-    print "#################################################"
-    print "multicity_requests"
-    print "#################################################"
-    print multicity_requests
-    print "#################################################"
-
     cheap_airfares = find_multicity_flights(multicity_requests)  # calls the function to get the results based on the type of trip (i.e. one-way, roundtrip, multicity).
-
-    print "#################################################"
-    print "cheap_airfares --- server"
-    print "#################################################"
-    print cheap_airfares
-    print "#################################################"
 
     carrier_names = get_carrier_name_multicity(cheap_airfares)
 
     airline_links = make_airline_link(carrier_names)
 
-    ####Testing
     cheap_airfares_info = zip(cheap_airfares, airline_links)
 
     total = sum_of_sale_total_multicity(cheap_airfares)
-
-    print "#################################################"
-    print "cheap_airfares from server"
-    print "#################################################"
-    print cheap_airfares_info
-    print "#################################################"
-
-    print "#################################################"
-    print "#################################################"
-    print airline_links
-    print "#################################################"
 
     return render_template("multicity_airfares.html",
                            cheap_airfares_info=cheap_airfares_info,
@@ -104,12 +80,6 @@ def get_airfares():
 
     cheap_airfares = find_cheap_airfare_by_case(request_inputs)  # calls the function to get the results based on the type of trip (i.e. one-way, roundtrip, multicity).
 
-    print "#################################################"
-    print "Cheap airfares one way from server"
-    print "#################################################"
-    print cheap_airfares
-    print "#################################################"
-
     parsed_results = cheap_airfares[0]
 
     parsed_results_return = cheap_airfares[1]
@@ -117,7 +87,6 @@ def get_airfares():
     carrier_names = get_carrier_name(cheap_airfares)
 
     airline_links = make_airline_link(carrier_names)
-
 
     if len(airline_links) == 1:
         parsed_results = zip(parsed_results, airline_links)
@@ -129,29 +98,6 @@ def get_airfares():
             airline_link = [airline_link]
             airline_links_return.append(airline_link)
         parsed_results_return = zip(parsed_results_return[0], airline_links_return)
-
-    
-
-    
-
-    
-    print "#################################################"
-    print "Cheap airfares info parsed return"
-    print "#################################################"
-    print parsed_results_return
-    print "#################################################"
-
-    print "#################################################"
-    print "Cheap airfares info parsed "
-    print "#################################################"
-    print parsed_results
-    print "#################################################"
-
-   
-
-    # carrier_name_return = get_carrier_name(parsed_results_return)
-
-    # airline_link_return = make_airline_link(carrier_name_return)
 
     return render_template("airfares.html",
                            parsed_results=parsed_results,

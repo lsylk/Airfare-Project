@@ -8,7 +8,21 @@ from datetime import datetime
 
 
 def get_carrier_name(cheap_airfares):
-    "Parse carrier's name and creates a list for one way and round trip search"
+    """Parse carrier's name and creates a list for one way and round trip search
+
+    >>> cheap_airfares = ([{'carrier_name': u'United Airlines, Inc.'}, {'carrier_name': u'United Airlines, Inc.'}], None)
+    >>> get_carrier_name(cheap_airfares)
+    [[u'United', u'Airlines,', u'Inc.']]
+
+    >>> cheap_airfares = ([{'carrier_name': u'United Airlines, Inc.'}], [({'carrier_name': u'United Airlines, Inc.'}, {'carrier_name': u'United Airlines, Inc.'})])
+    >>> get_carrier_name(cheap_airfares)
+    [[u'United', u'Airlines', u'', u'Inc.'], [u'United', u'Airlines', u'', u'Inc.']]
+
+    >>> cheap_airfares = ([{'carrier_name': u'United Airlines, Inc.'}], [({'carrier_name': u'Alaska Airlines, Inc.'}, {'carrier_name': u'United Airlines, Inc.'})])
+    >>> get_carrier_name(cheap_airfares)
+    [[u'Alaska', u'Airlines', u'', u'Inc.'], [u'United', u'Airlines', u'', u'Inc.']]
+
+    """
 
     carrier_names = []
 
@@ -16,14 +30,10 @@ def get_carrier_name(cheap_airfares):
         carrier_name = cheap_airfares[0][0]['carrier_name']
         carrier_name = carrier_name.split(' ')
         carrier_names.append(carrier_name)
-        # carrier_names = carrier_name
-        print """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
-        print """print carrier names from processing"""
-        print carrier_names
         return carrier_names
+
     else:
         num = range(len(cheap_airfares[1][0]))
-        print num
         for n in num:
             for flight in cheap_airfares:
                 carrier_name = cheap_airfares[1][0][n]['carrier_name']
@@ -31,19 +41,21 @@ def get_carrier_name(cheap_airfares):
                 carrier_name = carrier_name.split(' ')
                 carrier_names.append(carrier_name)
                 break
-        print """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
-        print """print carrier names from processing"""
-        print carrier_names
         return carrier_names
 
 
 def get_carrier_name_multicity(cheap_airfares):
-    "Parse carrier's name and creates a list for multicity search."
+    """Parse carrier's name and creates a list for multicity search.
 
-# #################################################
-# [([{'sale_total': u'USD313.10', 'departure_date': 'Sunday, 05 June 2016', 'airport_name_arrival': u'Miami', 'sale_fare_total': u'USD278.14', 'arrival_time': '07:07PM', 'airport_name_departure': u'Los Angeles', 'carrier_name': u'Alaska Airlines Inc.', 'airport_code_departure': u'LAX', 'flight_duration': 307, 'departure_time': '11:00AM', 'arrival_date': 'Sunday, 05 June 2016', 'airport_code_arrival': u'MIA', 'sale_tax_total': u'USD34.96', 'carrier_code': u'AS', 'aircraft_number': u'1174'}], u'alaskaairlines.com'), ([{'sale_total': u'USD734.10', 'departure_date': 'Thursday, 16 June 2016', 'airport_name_arrival': u'San Diego', 'sale_fare_total': u'USD669.76', 'arrival_time': '10:05PM', 'airport_name_departure': u'Miami', 'carrier_name': u'Alaska Airlines Inc.', 'airport_code_departure': u'MIA', 'flight_duration': 304, 'departure_time': '08:01PM', 'arrival_date': 'Thursday, 16 June 2016', 'airport_code_arrival': u'SAN', 'sale_tax_total': u'USD64.34', 'carrier_code': u'AS', 'aircraft_number': u'1998'}], u'alaskaairlines.com')]
-# #################################################
-#GooooooD##########
+    >>> cheap_airfares = [[{'carrier_name': u'Alaska Airlines Inc.'}], [{'carrier_name': u'Alaska Airlines Inc.'}], [{'carrier_name': u'United Airlines, Inc.'}]]
+    >>> get_carrier_name_multicity(cheap_airfares)
+    [[u'Alaska', u'Airlines', u'Inc.'], [u'Alaska', u'Airlines', u'Inc.'], [u'United', u'Airlines', u'', u'Inc.']]
+
+    >>> cheap_airfares = [[{'carrier_name': u'Alaska Airlines Inc.'}], [{'carrier_name': u'United Airlines, Inc.'}]]
+    >>> get_carrier_name_multicity(cheap_airfares)
+    [[u'Alaska', u'Airlines', u'Inc.'], [u'United', u'Airlines', u'', u'Inc.']]
+
+    """
     num = range(len(cheap_airfares))
 
     carrier_names = []
@@ -55,12 +67,26 @@ def get_carrier_name_multicity(cheap_airfares):
             carrier_name = carrier_name.split(' ')
             carrier_names.append(carrier_name)
             break
-    print carrier_names
+
     return carrier_names
 
 
 def make_airline_link(carrier_names):
-    """Creates a string for an airline's website."""
+    """Creates a string for an airline's website.
+
+    >>> carrier_names = []
+    >>> make_airline_link(carrier_names)
+    []
+
+    >>> carrier_names = [[u'Alaska', u'Airlines', u'Inc.'], [u'United', u'Airlines', u'', u'Inc.']]
+    >>> make_airline_link(carrier_names)
+    [u'alaskaairlines.com', u'unitedairlines.com']
+
+    >>> carrier_names = [[u'Alaska', u'Airlines', u'Inc.'], [u'Alaska', u'Airlines', u'Inc.'], [u'United', u'Airlines', u'', u'Inc.']]
+    >>> make_airline_link(carrier_names)
+    [u'alaskaairlines.com', u'alaskaairlines.com', u'unitedairlines.com']
+
+    """
 
     airlines = []
 
@@ -82,7 +108,21 @@ def make_airline_link(carrier_names):
 
 
 def sum_of_sale_total_multicity(cheap_airfares):
-    """Calculates the Total for the mulcity search."""
+    """Calculates the Total for the mulcity search.
+
+    >>> cheap_airfares = [[{'sale_total': u'USD301.10'}], [{'sale_total': u'USD357.10'}], [{'sale_total': u'USD68.10'}]]
+    >>> sum_of_sale_total_multicity(cheap_airfares)
+    726.3
+
+    >>> cheap_airfares = [[{'sale_total': u'USD301.10'}], [{'sale_total': u'USD357.10'}]]
+    >>> sum_of_sale_total_multicity(cheap_airfares)
+    658.2
+
+    >>> cheap_airfares = [[{'sale_total': u'USD301.10'}]]
+    >>> sum_of_sale_total_multicity(cheap_airfares)
+    301.1
+
+    """
 
     num = range(len(cheap_airfares))
 
@@ -113,13 +153,10 @@ def find_multicity_flights(multicity_requests):
 
     processing_data_results = map(parsing_data, search_flights_json, multicity_requests)
 
-    #  returns a list of list of dictionaries: i.e. [
-    #[{'sale_total': u'USD223.10', 'departure_date': 'Monday, 30 May 2016', 'airport_name_arrival': u'San Francisco', 'sale_fare_total': u'USD194.42', 'arrival_time': '11:52PM', 'airport_name_departure': u'Los Angeles', 'carrier_name': u'United Airlines, Inc.', 'airport_code_departure': u'LAX', 'flight_duration': 86, 'departure_time': '10:26PM', 'arrival_date': 'Monday, 30 May 2016', 'airport_code_arrival': u'SFO', 'sale_tax_total': u'USD28.68', 'carrier_code': u'UA', 'aircraft_number': u'398'}],
-
-    #[{'sale_total': u'USD374.25', 'departure_date': 'Saturday, 25 June 2016', 'airport_name_arrival': u'San Francisco', 'sale_fare_total': u'USD335.02', 'arrival_time': '04:54PM', 'airport_name_departure': u'Miami', 'carrier_name': u'Alaska Airlines Inc.', 'airport_code_departure': u'MIA', 'flight_duration': 339, 'departure_time': '08:15AM', 'arrival_date': 'Saturday, 25 June 2016', 'airport_code_arrival': u'SFO', 'sale_tax_total': u'USD39.23', 'carrier_code': u'AS', 'aircraft_number': u'1060'}]
-    #]
-
     parsed_results = processing_data_results
+
+    #  returns a list of list of dictionaries: i.e.
+    #[[{'sale_total': u'USD223.10', 'departure_date': 'Monday, 30 May 2016', 'airport_name_arrival': u'San Francisco', 'sale_fare_total': u'USD194.42', 'arrival_time': '11:52PM', 'airport_name_departure': u'Los Angeles', 'carrier_name': u'United Airlines, Inc.', 'airport_code_departure': u'LAX', 'flight_duration': 86, 'departure_time': '10:26PM', 'arrival_date': 'Monday, 30 May 2016', 'airport_code_arrival': u'SFO', 'sale_tax_total': u'USD28.68', 'carrier_code': u'UA', 'aircraft_number': u'398'}],[{'sale_total': u'USD374.25', 'departure_date': 'Saturday, 25 June 2016', 'airport_name_arrival': u'San Francisco', 'sale_fare_total': u'USD335.02', 'arrival_time': '04:54PM', 'airport_name_departure': u'Miami', 'carrier_name': u'Alaska Airlines Inc.', 'airport_code_departure': u'MIA', 'flight_duration': 339, 'departure_time': '08:15AM', 'arrival_date': 'Saturday, 25 June 2016', 'airport_code_arrival': u'SFO', 'sale_tax_total': u'USD39.23', 'carrier_code': u'AS', 'aircraft_number': u'1060'}]]
 
     return parsed_results
 
@@ -171,6 +208,10 @@ def instantiate_datetime_object(datetime_stamps):
     [datetime.datetime(2016, 9, 10, 15, 35, 7), datetime.datetime(2016, 9, 10, 16, 48, 7)]
 
     >>> datetime_stamps = [u'2016-09-10T15:35-07:00']
+    >>> instantiate_datetime_object(datetime_stamps)
+    [datetime.datetime(2016, 9, 10, 15, 35, 7)]
+
+    >>> datetime_stamps = [u'2016-09-10T15:35+07:00']
     >>> instantiate_datetime_object(datetime_stamps)
     [datetime.datetime(2016, 9, 10, 15, 35, 7)]
 
@@ -274,8 +315,6 @@ def search_flights(request_inputs):
     request_as_json = requests.post(REQUEST_URL, data=json.dumps(payload), headers=headers)  # Used post method request and json.dumps to turn the dictionary into a JSON string
 
     search_results = request_as_json.json()
-
-    # r = json.dumps(search_results)
 
     return search_results
 

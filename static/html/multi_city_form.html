@@ -2,7 +2,7 @@
 <div>
 <form action="/results_multicity", method="POST">
   <fieldset  data-ng-repeat="choice in choices| limitTo : 5" >
-    {{$index}}
+   <!--  {{$index}} -->
     <label for="user-departure">Departure:</label>
     <input class="form_control", type="text", name="departure", ng-model="choiceDeparture", id="user-departure", placeholder="Input airport code", required/>
 
@@ -13,7 +13,7 @@
     <label for="user-departure-date">Departure Date:</label>
     <input class="form_control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="choiceDepartureDate" id="user-departure-date" is-open="showdp" placeholder="Date 'yyyy-mm-dd'", required/>
 
-    <input type="checkbox" ng-model="showdp"/>
+    <!-- <input type="checkbox" ng-model="showdp"/> -->
 
     <span>
         <button type="button" class="btn btn-default" ng-click="showcalendar($event)">
