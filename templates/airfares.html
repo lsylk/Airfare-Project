@@ -22,33 +22,52 @@
           </tr>
         </thead>
         <tbody>
-                {% if parsed_results_return is none %}
+            {% if parsed_results_return is none %}
                         
-                    {% for result in parsed_results %}
+                {% for result in parsed_results %}
 
-                            <tr>
-                            <td> {{ result[0]['departure_date'] }} {{ result[0]['departure_time'] }}</td>
-                            <td> {{ result[0]['airport_code_departure'] }}: {{ result[0]['airport_name_departure'] }}</td>
-                            <td> {{ result[0]['arrival_date'] }} {{ result[0]['arrival_time'] }}</td>
-                            <td> {{ result[0]['airport_code_arrival'] }}: {{ result[0]['airport_name_arrival'] }}</td>
+                    <tr>
+                    <td> {{ result[0]['departure_date'] }} {{ result[0]['departure_time'] }}</td>
+                    <td> {{ result[0]['airport_code_departure'] }}: {{ result[0]['airport_name_departure'] }}</td>
+                    <td> {{ result[0]['arrival_date'] }} {{ result[0]['arrival_time'] }}</td>
+                    <td> {{ result[0]['airport_code_arrival'] }}: {{ result[0]['airport_name_arrival'] }}</td>
 
-                            <td>  <a href="//{{ result[1] }} "> {{ result[0]['carrier_name'] }}</a></td>
-                            <td> {{ result[0]['carrier_code'] }} - {{ result[0]['aircraft_number'] }} </td>
-                            <td> {{ result[0]['flight_duration'] }} minutes</td>
+                    <td>  <a href="//{{ result[1] }} "> {{ result[0]['carrier_name'] }}</a></td>
+                    <td> {{ result[0]['carrier_code'] }} - {{ result[0]['aircraft_number'] }} </td>
+                    <td> {{ result[0]['flight_duration'] }} minutes</td>
 
-                            {% set currency = result[0]['sale_fare_total'][:3] %}
+                    {% set currency = result[0]['sale_fare_total'][:3] %}
 
-                            <td> {{ currency }} ${{ result[0]['sale_fare_total'][3:] }}</td>
-                            <td> {{ currency }}  ${{ result[0]['sale_tax_total'][3:] }}</td>
-                            <td> {{ currency }}  ${{ result[0]['sale_total'][3:] }}</td>
+                    <td> {{ currency }} ${{ result[0]['sale_fare_total'][3:] }}</td>
+                    <td> {{ currency }}  ${{ result[0]['sale_tax_total'][3:] }}</td>
+                    <td> {{ currency }}  ${{ result[0]['sale_total'][3:] }}</td>
 
-                           </tr>
+                   </tr>
+
+            {% endfor %}
         </tbody>
+    </table>
+    </div>
 
-                    {% endfor %}
 
                 {% else %}
-        
+                <div class="panel panel-default">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Departing on</th>
+                        <th>From</th>
+                        <th>Arriving on</th>
+                        <th>At</th>
+                        <th>Airlines</th>
+                        <th>Aircraft Number</th>
+                        <th>Flight Duration</th>
+                        <th>Airfare</th>
+                        <th>Tax</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                     <div class="row">
                         <div class="col-md-6">
                             <h4>Flight</h4>
@@ -62,6 +81,7 @@
                             <td> Aircraft Number:{{ parsed_results_return[0][0]['carrier_code'] }} - {{ parsed_results_return[0][0]['aircraft_number'] }} </td>
                             <td> Flight duration: {{ parsed_results_return[0][0]['flight_duration'] }} minutes</td>
                             <tr>
+                        </div>
                             
                         <div class="col-md-6">
                             <tr>
@@ -85,15 +105,14 @@
                         <td> Airfare: {{ currency }}  ${{ parsed_results_return[0][0]['sale_fare_total'] | currencyadd(parsed_results_return[1][0]['sale_fare_total']) }}</td>
                         <td> Tax: {{ currency }}  ${{ parsed_results_return[0][0]['sale_tax_total'] | currencyadd(parsed_results_return[1][0]['sale_tax_total']) }}</td>
                         <td> Total: {{ currency }}  ${{ parsed_results_return[0][0]['sale_total'] | currencyadd(parsed_results_return[1][0]['sale_total']) }}</td>
+
+                        {% endif %}
        
                         </div>
-                    
-
-
-                {% endif %}
- 
-    </tr>        
-
+                    </div>
+                </tbody>
+                </table>
+            </div>
 
 {% endblock %}
 
