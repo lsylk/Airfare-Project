@@ -1,40 +1,49 @@
 <!-- Round Trip Form -->
-
-<form action="/results" method="POST"> 
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+ -->
+<center>
+<form class="form-inline" action="/results" method="POST">
+<div>    
+    
     <label for="user-departure">Departure:</label>
-    <input type="text", name="departure", ng-model="departure", id="user-departure", placeholder="Input airport code", required/>
-    <br></br>
-
-    <label for="user-arrival">Arrival:</label>
-    <input class="form_control", type="text", name="arrival", ng-model="arrival", id="user-arrival", placeholder="Input airport code" required/>
-    <br></br>
+    <input class="form-control" type="text", name="departure", ng-model="departure", id="user-departure", placeholder="Input airport code", required/>
 
     <label for="user-departure-date">Departure Date:</label>
-    <input class="form_control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="departure_date" id="user-departure-date" is-open="showdpDeparture" placeholder="Departure date", required/>
+    <input class="form-control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="departure_date" id="user-departure-date" is-open="showdpDeparture" placeholder="Departure date", required/>
     <span>
         <button type="button" class="btn btn-default" ng-click="showcalendarDeparture($event)">
             <i class="glyphicon glyphicon-calendar"></i>
         </button>
     </span>
-    </div>
     <br></br>
+</div>
+
+<div>
+    <label for="user-arrival">Arrival:</label>
+    <input class="form-control", type="text", name="arrival", ng-model="arrival", id="user-arrival", placeholder="Input airport code" required/>
 
     <label for="user-return-date">Return Date:</label>
-    <input class="form_control", name="return_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="return_date" id="user-return-date" is-open="showdpArrival" placeholder="Return date", required/>
+    <input class="form-control", name="return_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="return_date" id="user-return-date" is-open="showdpArrival" placeholder="yyyy-mm-dd", required/>
     <span>
         <button type="button" class="btn btn-default" ng-click="showcalendarArrival($event)">
             <i class="glyphicon glyphicon-calendar"></i>
         </button>
     </span>
-    </div>
     <br></br>
+   
+</div>
+    
 
-    <input class="form_control", type="submit", value="Find"/>
+    <div style="padding-left: 20px">
+    <input class="btn btn-default active", type="submit", value="Find"/>
+    </div>
+
 
     <!-- <label for="user-results">Number of results:</label> -->
     <input class="form_control", type="hidden", name="results", ng-model="results", min="1", max="3", id="user-results", value="{{ results }}", required/>
     <br></br>
 
     
-
+</div>
 </form>
+</center>

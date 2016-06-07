@@ -1,17 +1,19 @@
 <!-- Multi-City Form -->
-<div>
-<form action="/results_multicity", method="POST">
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+ -->
+<div style="padding-left: 250px">
+<form class="form-inline" action="/results_multicity", method="POST">
   <fieldset  data-ng-repeat="choice in choices| limitTo : 5" >
    <!--  {{$index}} -->
     <label for="user-departure">Departure:</label>
-    <input class="form_control", type="text", name="departure", ng-model="choiceDeparture", id="user-departure", placeholder="Input airport code", required/>
+    <input class="form-control", type="text", name="departure", ng-model="choiceDeparture", id="user-departure", placeholder="Input airport code", required/>
 
     <label for="user-arrival">Arrival:</label>
-    <input class="form_control", type="text", name="arrival", ng-model="choiceArrival", id="user-arrival", placeholder="Input airport code", required/>
+    <input class="form-control", type="text", name="arrival", ng-model="choiceArrival", id="user-arrival", placeholder="Input airport code", required/>
 
 
     <label for="user-departure-date">Departure Date:</label>
-    <input class="form_control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="choiceDepartureDate" id="user-departure-date" is-open="showdp" placeholder="Date 'yyyy-mm-dd'", required/>
+    <input class="form-control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="choiceDepartureDate" id="user-departure-date" is-open="showdp" placeholder="yyyy-mm-dd", required/>
 
     <!-- <input type="checkbox" ng-model="showdp"/> -->
 
@@ -22,19 +24,24 @@
     </span>
 
 
-    <input class="form_control", type="hidden", name="results", ng-model="results", id="user-results", value="{{ results }}" required/>
+    <input class="form-control", type="hidden", name="results", ng-model="results", id="user-results", value="{{ results }}" required/>
 
     <span>
-        <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
+        <button class="btn btn-default btn-md active" ng-show="$last" ng-click="removeChoice()">-</button>
     </span>
 
     <span>
-        <button class="addfields" ng-show="$last" ng-click="addNewChoice()">+</button>
+        <button class="btn btn-default btn-md active" ng-show="$last" ng-click="addNewChoice()">+</button>
     </span>
     
+    <br></br>
 </fieldset>
 
-    <button class="submit" type="submit">Find</button>
+    
+    <div style="padding-left: 350px">
+    
+    <button class="btn btn-default btn-md active" type="submit">Find</button>
+    </div>
 
 <!-- <input class="form_control", type="button", value="Find"/> -->
 
