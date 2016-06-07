@@ -1,55 +1,61 @@
 {% extends 'base.html' %}
 {% block content %}
 
+
+
+
+<div class="container">
     <center><h2>...</h2></center>
-<table class="table table-striped">
-<ul>
-    <li> Airfare Options
-        <br></br>
 
-        <ul>
+    <div class="panel panel-default">
+    <table class="table table-striped">
+
+
+    
+        <thead>
+          <tr>
+            <th>Departing on</th>
+            <th>From</th>
+            <th>Arriving on</th>
+            <th>At</th>
+            <th>Airlines</th>
+            <th>Aircraft Number</th>
+            <th>Flight Duration</th>
+            <th>Airfare</th>
+            <th>Tax</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+
                         {% for result in cheap_airfares_info %}
-                    <div>
-                    <li> Departing on {{ result[0][0]['departure_date'] }} at {{ result[0][0]['departure_time'] }}</li>
-                    <li> From {{ result[0][0]['airport_code_departure'] }}: {{ result[0][0]['airport_name_departure'] }}</li>
-                    <li> Arriving on {{ result[0][0]['arrival_date'] }} at {{ result[0][0]['arrival_time'] }}</li>
-                    <li> At {{ result[0][0]['airport_code_arrival'] }}: {{ result[0][0]['airport_name_arrival'] }}</li>
+
+                    <tr>
+
+                    <td> {{ result[0][0]['departure_date'] }} {{ result[0][0]['departure_time'] }}</td>
+                    <td> {{ result[0][0]['airport_code_departure'] }}: {{ result[0][0]['airport_name_departure'] }}</td>
+                    <td> {{ result[0][0]['arrival_date'] }} {{ result[0][0]['arrival_time'] }}</td>
+                    <td> {{ result[0][0]['airport_code_arrival'] }}: {{ result[0][0]['airport_name_arrival'] }}</td>
         
-                    <li> Airlines : <a href="//{{ result[1] }} ">{{ result[0][0]['carrier_name'] }} </a> </li>
-                    <li> Aircraft Number: {{ result[0][0]['carrier_code'] }} - {{ result[0][0]['aircraft_number'] }} </li>
-                    <li> Flight duration: {{ result[0][0]['flight_duration'] }} minutes</li>
+                    <td> <a href="//{{ result[1] }} ">{{ result[0][0]['carrier_name'] }} </a> </td>
+                    <td> {{ result[0][0]['carrier_code'] }} - {{ result[0][0]['aircraft_number'] }} </td>
+                    <td> {{ result[0][0]['flight_duration'] }} minutes</td>
 
-                    </div>
-
-                    <div>
-                    <h4>Price</h4>
 
                         {% set currency = result[0][0]['sale_fare_total'][:3] %}
 
-                        <li> Airfare: {{ currency }} ${{ result[0][0]['sale_fare_total'][3:] }}</li>
-                        <li> Tax: {{ currency }}  ${{ result[0][0]['sale_tax_total'][3:] }}</li>
-                        <li> Total: {{ currency }}  ${{ result[0][0]['sale_total'][3:] }}</li>
-
-                        <br></br>
-
-                    <br></br>
-                    </div>
-                            {% endfor %}
+                        <td> {{ currency }} ${{ result[0][0]['sale_fare_total'][3:] }}</td>
+                        <td> {{ currency }}  ${{ result[0][0]['sale_tax_total'][3:] }}</td>
+                        <td> {{ currency }}  ${{ result[0][0]['sale_total'][3:] }}</td>  
                     
+                            {% endfor %}
 
-                    <div>
-                    <li> Airfare Total: ${{ total }} </li>
-                    </div>
-                
-                <br></br>
-        </ul>
-    </li>        
-
-</ul>
 </table>
-
-
-<script src="/static/js/search_bar.js"></script>
-<gcse:search></gcse:search>
+                        <div class="col-md-6">
+                        Airfare Total: ${{ total }}
+                        </div>
+</div>
+</div>
+                         
 
 {% endblock %}
