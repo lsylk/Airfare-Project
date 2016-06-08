@@ -3,9 +3,9 @@ from processing_data import find_cheap_airfare_by_case, find_multicity_flights, 
 from jinja2 import StrictUndefined
 
 from flask import Flask, render_template, redirect, flash, request
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 
-from pprint import pprint
+# from pprint import pprint
 
 # with open("sample_5.json") as json_file:
 #     json_data = json.load(json_file)
@@ -16,7 +16,7 @@ app = Flask(__name__)
 app.secret_key = "SECRETKEYSECRET"
 
 # Raises an error if an undefined variable in Jinja2 fails silently.
-app.jinja_env.undefined = StrictUndefined
+# app.jinja_env.undefined = StrictUndefined
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #                         Custom Filters for Jinja
@@ -106,11 +106,11 @@ def get_airfares():
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
-    app.debug = True
+    # app.debug = True
 
     # connect_to_db(app)
 
     # Use the DebugToolbar
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
 
     app.run()
