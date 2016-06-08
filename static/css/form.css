@@ -78,7 +78,8 @@ a:hover {
   .carousel-inner img {
      /* -webkit-filter: grayscale(90%);
       filter: grayscale(90%); /* make all photos black and white */ 
-      width: 100%; /* Set width to 100% */
+      width: 10000px; /* Set width to 100% */
+      height: 500px;
       margin: auto;
   }
   .carousel-caption h3 {
