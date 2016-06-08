@@ -9,7 +9,7 @@
     <input class="form-control" type="text", name="departure", ng-model="departure", id="user-departure", placeholder="Input airport code", required/>
 
     <label for="user-departure-date">Departure Date:</label>
-    <input class="form-control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="departure_date" id="user-departure-date" is-open="showdpDeparture" placeholder="Departure date", required/>
+    <input class="form-control", name="departure_date" uib-datepicker-popup="{{dateformat}}" min-date="mindate" ng-model="departure_date" id="user-departure-date" is-open="showdpDeparture" placeholder="yyyy-mm-dd", required/>
     <span>
         <button type="button" class="btn btn-default" ng-click="showcalendarDeparture($event)">
             <i class="glyphicon glyphicon-calendar"></i>

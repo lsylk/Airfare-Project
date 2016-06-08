@@ -11,22 +11,55 @@
       background: white; }
   .tabsdemoDynamicHeight md-content h1:first-child {
     margin-top: 0; }
-/*form multicity*/
 
-.left-div {
-    float: left;
-    width: 100px;
-    height: 20px;
-    margin-right: 8px;
-    background-color: linen;
-}
-.right-div {
-    margin-left: 108px;
-    background-color: lime;
+a:link {
+    color: white;
 }
 
+a:hover {
+    text-decoration: none;
+}
 
+#insky-logo {
+    font-family: 'Nunito', sans-serif;
+    color: white;
+    margin-left: 40px;
+  }
 
+#insky-head {
+    font-family: 'Nunito', sans-serif;
+    color: white;
+    margin-top: -40px;
+    margin-bottom: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #39AFC1;
+}
+
+#title {
+    font-family: 'Nunito', sans-serif;
+    color: black;
+}
+
+#total{
+  font-size: 15pt;
+}
+
+#logo-text{
+  margin-left: 57%;
+}
+
+#flight{
+  margin-left: -5%;
+}
+
+#logo-result{
+  margin-left: 10%;
+}
+
+#flight-result{
+  margin-left: -55%;
+}
 
 /*carousel */
   .container {
@@ -43,7 +76,7 @@
       border-color: #f1f1f1;
   }
   .carousel-inner img {
-      -webkit-filter: grayscale(90%);
+     /* -webkit-filter: grayscale(90%);
       filter: grayscale(90%); /* make all photos black and white */ 
       width: 100%; /* Set width to 100% */
       margin: auto;
@@ -55,4 +88,4 @@
     .carousel-caption {
       display: none; /* Hide the carousel text when the screen is less than 600 pixels wide */
     }
-  }  
+  }

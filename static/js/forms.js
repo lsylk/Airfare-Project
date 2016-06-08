@@ -3,15 +3,15 @@
 "use strict";
         var app = angular.module('flightApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache', 'ngAnimate', 'ui.bootstrap' ]);
         app.controller('ctrlForm', ["$scope", function($scope) {
-            $scope.departure = "LAX";
-            $scope.arrival = "SFO";
-            $scope.departure_date = new Date(); // "2016-10-11 ==> 11/11/2016"
-            $scope.mindate = new Date();
-            $scope.return_date = null;
+            // $scope.departure = "LAX";
+            // $scope.arrival = "SFO";
+            // $scope.departure_date = new Date(); // "2016-10-11 ==> 11/11/2016"
+            // $scope.mindate = new Date();
+            // $scope.return_date = null;
             $scope.results = 1;
 
-            $scope.choiceDepartureDate = new Date();
-            $scope.choiceDeparture = "JFK";
+            // $scope.choiceDepartureDate = new Date();
+            // $scope.choiceDeparture = "JFK";
 
             $scope.showcalendarDeparture = function ($event) {
                 $scope.showdpDeparture = true;
