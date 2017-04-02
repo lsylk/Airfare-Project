@@ -6,3 +6,12 @@ secrets.sh
 
 # ignore all .pyc files
 *.pyc
+
+# ignore node modules
+node_modules
+
+# ignore env
+env
+
+# ignore htmlcov
+htmlcov
